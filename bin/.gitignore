@@ -26,10 +26,3 @@
 /nbdist/
 /.nb-gradle/
 /target/
-/.gitignore
-/.mvn/
-/manifest.yml
-/mvnw
-/mvnw.cmd
-/pom.xml
-/src/
