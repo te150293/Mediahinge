@@ -42,11 +42,11 @@ public class GetRSS {
 			URLConnection urlConnection;
 
 			//以下三行はローカル実行時にのみ必要な記述、デプロイ時にコメントアウト必須
-			SocketAddress addr = new InetSocketAddress("172.17.0.2", 80);
-			Proxy proxy = new Proxy(Proxy.Type.HTTP,addr);
-			urlConnection = url.openConnection(proxy);
+//			SocketAddress addr = new InetSocketAddress("172.17.0.2", 80);
+//			Proxy proxy = new Proxy(Proxy.Type.HTTP,addr);
+//			urlConnection = url.openConnection(proxy);
 
-//			urlConnection = url.openConnection();
+			urlConnection = url.openConnection();
 
 			urlConnection.setRequestProperty("User-Agent","Mozilla/5.0");
 
