@@ -6,24 +6,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import jp.mediahinge.spring.boot.app.service.NLUService;
+import jp.mediahinge.spring.boot.app.connection.NLU;
 
 @Controller
 @RequestMapping("nlu")
 public class NLUClontroller {
 
 	@Autowired
-	NLUService service;
+	NLU service;
 	
 	@GetMapping
 	public String mapping_of_test() {
 		return "nlu/test";
 	}
 
-	@PostMapping
-	public String test() {
-		service.test_NLU();
-		return "redirect:/nlu";
-//		test 
-	}
 }

@@ -52,10 +52,10 @@ public class ArticleController {
 
 		List<ArticleForm> articlesList = new ArrayList<ArticleForm>();
 		for (ArticleForm doc : service.getAll()) {
-			String article_id = doc.getArticle_id();
-			if (article_id != null){
+			String _id = doc.get_id();
+			if (_id != null){
 				ArticleForm form = new ArticleForm();
-				form.setArticle_id(article_id);;
+				form.set_id(_id);;
 				articlesList.add(form);
 			}
 		}
@@ -69,7 +69,7 @@ public class ArticleController {
 		Date today = new Date();
 		SimpleDateFormat id_format = new SimpleDateFormat("yyyyMMddHHmmss");
 		ArticleForm articleForm = new ArticleForm();
-		articleForm.setArticle_id(id_format.format(today));
+//		articleForm.setArticle_id(id_format.format(today));
 		articleForm.setMedia("test");
 //		articleForm.setHeading("test");
 //		articleForm.setFirst_paragraph("test");

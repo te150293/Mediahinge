@@ -15,11 +15,6 @@ public class CloudantService {
     private Database db = null;
     private static final String databaseName = "mediahinge_db02";
     
-    public CloudantService(){
-    	System.out.println("debug:instance");
-
-    }
-    
     public Database getDB(){
     	
     	if(db == null) {
