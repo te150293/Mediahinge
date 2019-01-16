@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class NLUForm extends BaseForm{
+	  private String article_id;
 	  private List<ConceptsResult> concepts;
 	  private List<EntitiesResult> entities;
 	  private List<KeywordsResult> keywords;

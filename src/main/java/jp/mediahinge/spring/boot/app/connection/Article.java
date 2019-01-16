@@ -20,7 +20,6 @@ public class Article {
 	
 	private ArticleForm articleForm = new ArticleForm();
 	private String type = "article";
-	private String article_id;
 	private String media;
 	private String heading;
 	private String first_paragraph;
@@ -28,7 +27,6 @@ public class Article {
 	private String url;
 	private String distribution_date;
 	private String topics_id = "-1";
-	private boolean isPoliticalNews = false;
 
 	public void setArticle(RSSForm rssForm) throws Exception{
 
@@ -54,7 +52,6 @@ public class Article {
 
 		//articleFormにセット
 		articleForm.setType(type);
-		articleForm.setArticle_id(article_id);
 		articleForm.setMedia(media);
 		articleForm.setHeading(heading);
 		articleForm.setFirst_paragraph(first_paragraph);
@@ -62,8 +59,6 @@ public class Article {
 		articleForm.setUrl(url);
 		articleForm.setDistribution_date(distribution_date);
 		articleForm.setTopics_id(topics_id);
-
-		System.out.println("Successfully set ArticleForm!");
 	}
 	
 	public ArticleForm getArticle() {
@@ -72,8 +67,6 @@ public class Article {
 	}
 	
 	public void insertArticle(CloudantArticleService articleService) throws Exception{
-		System.out.println("Started inserting " + articleForm.getMedia() + "'s article data");
-		
 		articleService.persist(articleForm);
 		
 		System.out.println("Successfully inserted article data!");
@@ -152,7 +145,6 @@ public class Article {
 	}
 	
 	public void processMainichi() {
-		System.out.println("processMainichi");
 
 		Elements elements;
 		Element element;
@@ -189,6 +181,7 @@ public class Article {
 	}
 
 	public boolean categoryCheck() {
+		System.out.println("processMainichi");
 		System.out.println("Category check");
 
 		Attributes attributes;
@@ -198,7 +191,7 @@ public class Article {
 			attributes = childElement.attributes();
 			if(attributes.get("name").equals("keywords")) {
 				if(attributes.get("content").indexOf("政治") != -1) {
-					System.out.println("DEBUG:This is Political News!");
+					System.out.println("This is Political News!");
 					return true;
 				}
 			}

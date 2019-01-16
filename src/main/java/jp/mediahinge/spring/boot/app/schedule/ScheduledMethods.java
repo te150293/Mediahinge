@@ -27,16 +27,13 @@ public class ScheduledMethods {
 	@Autowired
 	private CloudantArticleService articleService;
 
-	@Scheduled(cron = "0 * * * * *")
-	@Scheduled(cron = "10 * * * * *")
-	@Scheduled(cron = "20 * * * * *")
-	@Scheduled(cron = "30 * * * * *")
-	@Scheduled(cron = "40 * * * * *")
-	@Scheduled(cron = "50 * * * * *")
+	@Scheduled(cron = "0 0 * * * *")
+//	@Scheduled(cron = "10 * * * * *")
+//	@Scheduled(cron = "20 * * * * *")
+//	@Scheduled(cron = "30 * * * * *")
+//	@Scheduled(cron = "40 * * * * *")
+//	@Scheduled(cron = "50 * * * * *")
 	public void nobu() throws Exception{
-
-
-		System.out.println(rssService);
 		
 		RSS rss = new RSS();
 
@@ -44,9 +41,6 @@ public class ScheduledMethods {
 		rss.insertRSS(rssService);
 		List<RSSForm> insertedRSSList = rss.getRSSList();
 
-		for(Object obj :insertedRSSList){
-			System.out.println(obj);
-		}
 		for(Object obj :insertedRSSList) {
 			RSSForm rssForm = (RSSForm)obj;
 			
@@ -54,13 +48,13 @@ public class ScheduledMethods {
 			article.setArticle(rssForm);
 
 			ArticleForm temp_ArticleForm = article.getArticle();
-			System.out.println(temp_ArticleForm);
 			if(temp_ArticleForm.getType()!= null) {
 				article.insertArticle(articleService);
 				if(temp_ArticleForm.getText() != null) {
 					NLU nlu = new NLU();
-					nlu.setNLUForm(temp_ArticleForm.getText());
+					nlu.setNLUForm(temp_ArticleForm);
 					nlu.insertAnalysisResults(nluService);
+					System.out.println();
 				}
 			}
 		}

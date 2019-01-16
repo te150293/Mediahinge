@@ -11,6 +11,7 @@ import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.Fe
 import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.KeywordsOptions;
 import com.ibm.watson.developer_cloud.service.security.IamOptions;
 
+import jp.mediahinge.spring.boot.app.form.ArticleForm;
 import jp.mediahinge.spring.boot.app.form.NLUForm;
 import jp.mediahinge.spring.boot.app.service.CloudantNLUService;
 
@@ -19,7 +20,7 @@ public class NLU {
 
 	private NLUForm nluForm = new NLUForm();
     
-	public void setNLUForm(String text) {
+	public void setNLUForm(ArticleForm articleForm) {
 	    String language = "ja";
 	    
 		KeywordsOptions keywords = new KeywordsOptions.Builder().build();
@@ -35,7 +36,7 @@ public class NLU {
 		AnalyzeOptions parameters = new AnalyzeOptions.Builder()
 				.features(features)
 				.language(language)
-				.text(text)
+				.text(articleForm.getText())
 				.build();
 
 		IamOptions options = new IamOptions.Builder()
@@ -51,6 +52,7 @@ public class NLU {
 				.execute();
 		
 		nluForm.setType("Analysis Results");
+		nluForm.setArticle_id(articleForm.getUrl());
 		nluForm.setConcepts(response.getConcepts());
 		nluForm.setEntities(response.getEntities());
 		nluForm.setKeywords(response.getKeywords());
