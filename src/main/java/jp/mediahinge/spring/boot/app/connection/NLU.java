@@ -62,12 +62,9 @@ public class NLU {
 	}
 	
 	public void insertAnalysisResults(CloudantNLUService nluService) throws Exception{
-		System.out.println("Started inserting Analysis Results!");
-		
 		nluService.persist(nluForm);
+		Thread.sleep(400);
 		
 		System.out.println("Successfully inserted Analysis Results!");
-
-		Thread.sleep(200);
 	}
 }

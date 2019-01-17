@@ -27,8 +27,12 @@ public class CloudantRSSService extends CloudantService{
     public RSSForm get(String id) {
         return getDB().find(RSSForm.class, id);
     }
-    
-    public List<RSSForm> findURL(String url) {
+    /**
+     * Search url from rss list.
+     * 
+     * @return search results
+     */
+    public List<RSSForm> searchURL(String url) {
     	String selector = 
         		"{\r\n" + 
         		"   \"selector\": {\r\n" + 
@@ -55,8 +59,8 @@ public class CloudantRSSService extends CloudantService{
         	System.out.println("DEBUG:" + getDB().query(selector, RSSForm.class));
         	QueryResult queryResult = getDB().query(selector, RSSForm.class);
         	System.out.println("DEBUG:" + queryResult.getDocs());
-        	List<RSSForm> rss = queryResult.getDocs();
-        	return rss;
+        	List<RSSForm> rssList = queryResult.getDocs();
+        	return rssList;
     }
 
     public RSSForm persist(RSSForm RSSForm) {
