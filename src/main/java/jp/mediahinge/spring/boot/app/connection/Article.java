@@ -68,10 +68,9 @@ public class Article {
 	
 	public void insertArticle(CloudantArticleService articleService) throws Exception{
 		articleService.persist(articleForm);
+		Thread.sleep(400);
 		
 		System.out.println("Successfully inserted article data!");
-		
-		Thread.sleep(200);
 	}
 
 	public void processYomiuri() {

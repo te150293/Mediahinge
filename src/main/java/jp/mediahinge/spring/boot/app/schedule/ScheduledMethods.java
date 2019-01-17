@@ -28,6 +28,7 @@ public class ScheduledMethods {
 	private CloudantArticleService articleService;
 
 	@Scheduled(cron = "0 0 * * * *")
+//	@Scheduled(cron = "0 * * * * *")
 //	@Scheduled(cron = "10 * * * * *")
 //	@Scheduled(cron = "20 * * * * *")
 //	@Scheduled(cron = "30 * * * * *")

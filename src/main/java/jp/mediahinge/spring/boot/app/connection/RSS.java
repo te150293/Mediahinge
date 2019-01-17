@@ -6,11 +6,8 @@ import java.net.SocketAddress;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
 import com.sun.syndication.feed.synd.SyndEntry;
@@ -48,9 +45,9 @@ public class RSS {
 			URLConnection urlConnection;
 
 			//以下三行はローカル実行時にのみ必要な記述、デプロイ時にコメントアウト必須
-//			SocketAddress addr = new InetSocketAddress("172.17.0.2", 80);
-//			Proxy proxy = new Proxy(Proxy.Type.HTTP,addr);
-//			urlConnection = url.openConnection(proxy);
+			SocketAddress addr = new InetSocketAddress("172.17.0.2", 80);
+			Proxy proxy = new Proxy(Proxy.Type.HTTP,addr);
+			urlConnection = url.openConnection(proxy);
 
 			urlConnection = url.openConnection();
 
@@ -75,18 +72,30 @@ public class RSS {
 				}else {
 					rssForm.setMedia("mainichi");
 				}
+				
+				//entry.getLink()がURL
 				rssForm.setUrl(entry.getLink());
+				String notContainQueryString = entry.getLink();
+				if(entry.getLink().indexOf("?") != -1) {
+					notContainQueryString = rssForm.getUrl().substring(0, entry.getLink().indexOf("?"));
+				}
 
 				//記事URLが新規のものであった場合
-				if(rssService.findURL(entry.getLink()).size() == 0) {
-					rssList.add(rssForm);
-					Thread.sleep(200);
-				} 
+				int result1 = rssService.searchURL(entry.getLink()).size();
+				Thread.sleep(400);
+				
+				int result2 = rssService.searchURL(notContainQueryString).size();
+				Thread.sleep(400);
+				
+				if(result1 == 0) {
+					if(result2 == 0) {
+						rssList.add(rssForm);
+					}
+				}
 				//記事URLが既存のものであった場合
 				else {
 					break;
 				}
-				//entry.getLink()がURL
 			}
 			System.out.println("Finished reading " + media + "'s rss data!\n");
 		}
@@ -104,8 +113,7 @@ public class RSS {
 		for(Object obj :rssList) {
 			RSSForm rssForm = (RSSForm)obj;
 			rssService.persist(rssForm);
-			
-			Thread.sleep(200);
+			Thread.sleep(400);
 		}
 
 		System.out.println("Successfully inserted rss data!");
