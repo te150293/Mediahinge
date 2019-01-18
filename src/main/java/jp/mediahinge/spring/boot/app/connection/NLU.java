@@ -52,7 +52,7 @@ public class NLU {
 				.execute();
 		
 		nluForm.setType("Analysis Results");
-		nluForm.setArticle_id(articleForm.getUrl());
+		nluForm.setArticle_id(articleForm.get_id());
 		nluForm.setConcepts(response.getConcepts());
 		nluForm.setEntities(response.getEntities());
 		nluForm.setKeywords(response.getKeywords());

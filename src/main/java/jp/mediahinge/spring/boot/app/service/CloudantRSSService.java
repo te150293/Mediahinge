@@ -27,6 +27,7 @@ public class CloudantRSSService extends CloudantService{
     public RSSForm get(String id) {
         return getDB().find(RSSForm.class, id);
     }
+    
     /**
      * Search url from rss list.
      * 

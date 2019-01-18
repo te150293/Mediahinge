@@ -26,6 +26,8 @@ public class ScheduledMethods {
 	
 	@Autowired
 	private CloudantArticleService articleService;
+	
+	private static int count = 1;
 
 	@Scheduled(cron = "0 0 * * * *")
 //	@Scheduled(cron = "0 * * * * *")
@@ -34,7 +36,7 @@ public class ScheduledMethods {
 //	@Scheduled(cron = "30 * * * * *")
 //	@Scheduled(cron = "40 * * * * *")
 //	@Scheduled(cron = "50 * * * * *")
-	public void nobu() throws Exception{
+	public void insertData() throws Exception{
 		
 		RSS rss = new RSS();
 
@@ -59,5 +61,18 @@ public class ScheduledMethods {
 				}
 			}
 		}
+	}
+	
+	@Scheduled(cron = "0 0 0 * * *")
+	public void resetCount() throws Exception{
+		count = 1;
+	}
+	
+	public static int getCount() {
+		return count;
+	}
+	
+	public static void incrementCount() {
+		count++;
 	}
 }
