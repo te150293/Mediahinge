@@ -1,5 +1,8 @@
 package jp.mediahinge.spring.boot.app.connection;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Document;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import jp.mediahinge.spring.boot.app.form.ArticleForm;
 import jp.mediahinge.spring.boot.app.form.RSSForm;
+import jp.mediahinge.spring.boot.app.schedule.ScheduledMethods;
 import jp.mediahinge.spring.boot.app.service.CloudantArticleService;
 
 @Component
@@ -51,6 +55,9 @@ public class Article {
 		}
 
 		//articleFormにセット
+		Date today = new Date();
+		SimpleDateFormat id_format = new SimpleDateFormat("yyyyMMdd");
+		articleForm.set_id(id_format.format(today) + ScheduledMethods.getCount());
 		articleForm.setType(type);
 		articleForm.setMedia(media);
 		articleForm.setHeading(heading);
