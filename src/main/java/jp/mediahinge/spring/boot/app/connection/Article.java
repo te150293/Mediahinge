@@ -30,7 +30,7 @@ public class Article {
 	private String text = "";
 	private String url;
 	private String distribution_date;
-	private String topics_id = "-1";
+	private int topics_id = -1;
 
 	public void setArticle(RSSForm rssForm) throws Exception{
 
@@ -56,8 +56,16 @@ public class Article {
 
 		//articleFormにセット
 		Date today = new Date();
-		SimpleDateFormat id_format = new SimpleDateFormat("yyyyMMdd");
-		articleForm.set_id(id_format.format(today) + ScheduledMethods.getCount());
+		SimpleDateFormat id_format = new SimpleDateFormat("yyyy/MM/dd/");
+		if(ScheduledMethods.getArticleCounter() < 10) {
+			articleForm.set_id("A" + id_format.format(today) + "00" + ScheduledMethods.getArticleCounter());
+		}
+		else if(ScheduledMethods.getArticleCounter() < 100) {
+			articleForm.set_id("A" + id_format.format(today) + "0" + ScheduledMethods.getArticleCounter());
+		}
+		else {
+			articleForm.set_id("A" + id_format.format(today) + ScheduledMethods.getArticleCounter());
+		}
 		articleForm.setType(type);
 		articleForm.setMedia(media);
 		articleForm.setHeading(heading);

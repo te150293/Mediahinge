@@ -13,6 +13,7 @@ public class ArticleForm extends BaseForm{
 	private String text;
 	private String url;
 	private String distribution_date;
-	private String topics_id;
+	private int topics_id;
+	private double highest_rate;
 	
 }
