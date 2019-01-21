@@ -16,5 +16,6 @@ public class NLUForm extends BaseForm{
 	  private List<ConceptsResult> concepts;
 	  private List<EntitiesResult> entities;
 	  private List<KeywordsResult> keywords;
+	  private List<String> results;
 
 }

@@ -5,7 +5,9 @@ import java.net.Proxy;
 import java.net.SocketAddress;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -16,6 +18,7 @@ import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
 import jp.mediahinge.spring.boot.app.form.RSSForm;
+import jp.mediahinge.spring.boot.app.schedule.ScheduledMethods;
 import jp.mediahinge.spring.boot.app.service.CloudantRSSService;
 
 @Component
@@ -55,7 +58,7 @@ public class RSS {
 
 			SyndFeed feed = input.build(new XmlReader(urlConnection));
 
-			System.out.println("Started reading" + media + " rss data");
+			System.out.println("Started reading " + media + "'s rss data");
 			
 			System.out.println(rssService);
 			
@@ -74,23 +77,31 @@ public class RSS {
 				}
 				
 				//entry.getLink()がURL
-				rssForm.setUrl(entry.getLink());
 				String notContainQueryString = entry.getLink();
-				if(entry.getLink().indexOf("?") != -1) {
-					notContainQueryString = rssForm.getUrl().substring(0, entry.getLink().indexOf("?"));
+				if(notContainQueryString.indexOf("?") != -1) {
+					notContainQueryString = notContainQueryString.substring(0, entry.getLink().indexOf("?"));
+				}
+				rssForm.setUrl(notContainQueryString);
+				
+				Date today = new Date();
+				SimpleDateFormat id_format = new SimpleDateFormat("yyyy/MM/dd/");
+				if(ScheduledMethods.getRSSCounter() < 10) {
+					rssForm.set_id("R" + id_format.format(today) + "00" + ScheduledMethods.getRSSCounter());
+				}
+				else if(ScheduledMethods.getRSSCounter() < 100) {
+					rssForm.set_id("R" + id_format.format(today) + "0" + ScheduledMethods.getRSSCounter());
+				}
+				else {
+					rssForm.set_id("R" + id_format.format(today) + ScheduledMethods.getRSSCounter());
 				}
 
 				//記事URLが新規のものであった場合
-				int result1 = rssService.searchURL(entry.getLink()).size();
+				int result = rssService.searchURL(notContainQueryString).size();
 				Thread.sleep(400);
-				
-				int result2 = rssService.searchURL(notContainQueryString).size();
-				Thread.sleep(400);
-				
-				if(result1 == 0) {
-					if(result2 == 0) {
-						rssList.add(rssForm);
-					}
+
+				if(result == 0) {
+					rssList.add(rssForm);
+					ScheduledMethods.incrementRSSCounter();
 				}
 				//記事URLが既存のものであった場合
 				else {

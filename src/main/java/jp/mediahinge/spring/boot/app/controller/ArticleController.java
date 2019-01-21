@@ -80,7 +80,7 @@ public class ArticleController {
 		service.persist(articleForm);
 		System.out.println("debug:successfully insert test data");
 		service.shutDown();
-		System.out.println("debug:successfully shutdown  the connection");
+		System.out.println("debug:successfully shutdown the connection");
 		return "redirect:/articles";
 	}
 }
