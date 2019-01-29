@@ -13,7 +13,7 @@ import com.google.gson.JsonObject;
 public class CloudantService {
 
     private Database db = null;
-    private static final String databaseName = "mediahinge_db03";
+    private static final String databaseName = "mediahinge_db04";
     
     public Database getDB(){
     	

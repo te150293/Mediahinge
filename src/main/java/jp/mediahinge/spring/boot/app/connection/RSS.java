@@ -19,14 +19,14 @@ import com.sun.syndication.io.XmlReader;
 
 import jp.mediahinge.spring.boot.app.form.RSSForm;
 import jp.mediahinge.spring.boot.app.schedule.ScheduledMethods;
-import jp.mediahinge.spring.boot.app.service.CloudantRSSService;
+import jp.mediahinge.spring.boot.app.service.RSSService;
 
 @Component
 public class RSS {
 
 	private List<RSSForm> rssList = new ArrayList<>();
 
-	public void setRSSList(CloudantRSSService rssService) throws Exception{
+	public void setRSSList(RSSService rssService) throws Exception{
 
 		String urlstr[] = new String[3];
 		urlstr[0] = "https://assets.wor.jp/rss/rdf/yomiuri/politics.rdf";//読売
@@ -117,7 +117,7 @@ public class RSS {
 		return rssList;
 	}
 
-	public void insertRSS(CloudantRSSService rssService) throws Exception{
+	public void insertRSS(RSSService rssService) throws Exception{
 
 		System.out.println("Started inserting rss data!");
 

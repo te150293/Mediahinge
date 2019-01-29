@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jp.mediahinge.spring.boot.app.form.ArticleForm;
-import jp.mediahinge.spring.boot.app.service.CloudantArticleService;
+import jp.mediahinge.spring.boot.app.service.ArticleService;
 
 @Controller
 @RequestMapping("articles")
 public class ArticleController {
 
 	@Autowired
-	CloudantArticleService service;
+	ArticleService service;
 
 	/**
 	 * ModelにFormを初期セットする
@@ -69,13 +69,7 @@ public class ArticleController {
 		Date today = new Date();
 		SimpleDateFormat id_format = new SimpleDateFormat("yyyyMMddHHmmss");
 		ArticleForm articleForm = new ArticleForm();
-//		articleForm.setArticle_id(id_format.format(today));
 		articleForm.setMedia("test");
-//		articleForm.setHeading("test");
-//		articleForm.setFirst_paragraph("test");
-//		articleForm.setText("test");
-//		articleForm.setUrl("test");
-//		articleForm.setDistribution_date("test");
 		System.out.println("debug:insert test data");
 		service.persist(articleForm);
 		System.out.println("debug:successfully insert test data");

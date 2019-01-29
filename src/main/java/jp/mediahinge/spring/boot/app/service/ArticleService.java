@@ -1,6 +1,7 @@
 package jp.mediahinge.spring.boot.app.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -10,9 +11,10 @@ import com.cloudant.client.api.query.QueryResult;
 
 import jp.mediahinge.spring.boot.app.form.ArticleForm;
 import jp.mediahinge.spring.boot.app.form.RSSForm;
+import jp.mediahinge.spring.boot.app.form.TopicForm;
 
 @Service
-public class CloudantArticleService extends CloudantService{
+public class ArticleService extends CloudantService{
 
 	public Collection<ArticleForm> getAll(){
 		List<ArticleForm> docs;
@@ -51,13 +53,13 @@ public class CloudantArticleService extends CloudantService{
 		return getAll().size();
 	}
 
-
 	/**
-	 * Get article topics_id = -1.
+	 * Get article topic_id = -1.
 	 * 
 	 * @return search results
 	 */
-	public List<ArticleForm> getNotGroupedArticle() {String selector = 
+	public List<ArticleForm> getNotGroupedArticle() {
+		String selector = 
 			"{\r\n" + 
 			"   \"selector\": {\r\n" + 
 			"      \"$and\": [\r\n" + 
@@ -65,7 +67,7 @@ public class CloudantArticleService extends CloudantService{
 			"            \"type\": {\r\n" + 
 			"               \"$eq\": \"article\"\r\n" + 
 			"            },\r\n" + 
-			"            \"topics_id\": {\r\n" + 
+			"            \"topic_id\": {\r\n" + 
 			"               \"$eq\": -1\r\n" + 
 			"            }\r\n" + 
 			"         }\r\n" + 
@@ -85,5 +87,51 @@ public class CloudantArticleService extends CloudantService{
 	List<ArticleForm> articleList = queryResult.getDocs();
 	return articleList;
 
+	}
+	
+
+	/**
+	 * Get topic.
+	 * 
+	 * @return List<ArticleForm>.
+	 */
+	public List<ArticleForm> getArticlesSortedByTopics_id() {
+		String selector = 
+			"{\r\n" + 
+			"   \"selector\": {\r\n" + 
+			"      \"$and\": [\r\n" + 
+			"         {\r\n" + 
+			"            \"type\": {\r\n" + 
+			"               \"$eq\": \"article\"\r\n" + 
+			"            },\r\n" + 
+			"            \"topics_id\": {\r\n" + 
+			"               \"$ne\": -1\r\n" + 
+			"            }\r\n" + 
+			"         }\r\n" + 
+			"      ]\r\n" + 
+			"   },\r\n" + 
+			"   \"fields\": [\r\n" + 
+			"      \"_id\",\r\n" + 
+			"      \"_rev\",\r\n" + 
+			"      \"media\",\r\n" + 
+			"      \"heading\",\r\n" + 
+			"      \"first_paragraph\",\r\n" + 
+			"      \"text\",\r\n" + 
+			"      \"url\",\r\n" + 
+			"      \"topics_id\"\r\n" + 
+			"   ],\r\n" + 
+			"   \"sort\": [\r\n" + 
+			"      {\r\n" + 
+			"         \"topics_id\": \"desc\"\r\n" + 
+			"      }\r\n" + 
+			"   ],\r\n" + 
+			"   \"limit\": 30\r\n" + 
+			"}";
+		System.out.println("DEBUG:" + getDB().query(selector, ArticleForm.class));
+		QueryResult queryResult = getDB().query(selector, ArticleForm.class);
+		System.out.println("DEBUG:" + queryResult.getDocs());
+		//resultsは検索結果
+		List<ArticleForm> results = queryResult.getDocs();
+		return results;
 	}
 }

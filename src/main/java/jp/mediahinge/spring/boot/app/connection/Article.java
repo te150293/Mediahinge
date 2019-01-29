@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import jp.mediahinge.spring.boot.app.form.ArticleForm;
 import jp.mediahinge.spring.boot.app.form.RSSForm;
 import jp.mediahinge.spring.boot.app.schedule.ScheduledMethods;
-import jp.mediahinge.spring.boot.app.service.CloudantArticleService;
+import jp.mediahinge.spring.boot.app.service.ArticleService;
 
 @Component
 public class Article {
@@ -81,7 +81,7 @@ public class Article {
 		return articleForm;
 	}
 	
-	public void insertArticle(CloudantArticleService articleService) throws Exception{
+	public void insertArticle(ArticleService articleService) throws Exception{
 		articleService.persist(articleForm);
 		Thread.sleep(400);
 		

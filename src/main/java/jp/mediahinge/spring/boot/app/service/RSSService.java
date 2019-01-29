@@ -12,7 +12,7 @@ import com.cloudant.client.api.query.QueryBuilder;
 import jp.mediahinge.spring.boot.app.form.RSSForm;
 
 @Service
-public class CloudantRSSService extends CloudantService{
+public class RSSService extends CloudantService{
 
 	public Collection<RSSForm> getAll(){
 		List<RSSForm> docs;

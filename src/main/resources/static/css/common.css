@@ -1,0 +1,26 @@
+@charset "UTF-8";
+
+.contents {
+	min-height: 800px;
+}
+
+.header-contents {
+	text-align: center;
+}
+
+header {
+	background-color: #4682B4;
+	line-height: 70px;
+	height: 100px;
+}
+
+header #title {
+	color: #FAFAD2;
+	line-height: 100px;
+	display: inline-block;
+	font-size: 60px;
+}
+
+.link{
+	color: #FAFAD2;
+}
