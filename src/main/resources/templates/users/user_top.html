@@ -53,12 +53,12 @@
 					<!-- タブボタン部分 -->
 					<ul class="nav nav-tabs">
 						<li class="nav-item" th:each="article, stat: ${topic.articles}">
-							<a class="nav-link" th:classappend="${stat.first} ? 'active'" th:href="@{'#' + ${article.media}}" data-toggle="tab" th:text="${article.media}">media</a>
+							<a class="nav-link" th:classappend="${stat.first} ? 'active'" th:href="@{'#' + ${article.media} + ${topic.topic_id}}" data-toggle="tab" th:text="${article.media}">media</a>
 						</li>
 					</ul>
 					<!--タブのコンテンツ部分-->
 					<div class="tab-content">
-						<div class="tab-pane" th:classappend="${stat.first} ? 'active'" th:id="${article.media}" th:each="article, stat: ${topic.articles}">
+						<div class="tab-pane" th:classappend="${stat.first} ? 'active'" th:id="${article.media} + ${topic.topic_id}" th:each="article, stat: ${topic.articles}">
 							<ul>
 								<h4 class="heading" th:text="${article.heading}">heading</h4>
 								<br>
