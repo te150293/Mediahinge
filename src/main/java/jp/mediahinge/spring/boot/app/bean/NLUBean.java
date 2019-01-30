@@ -1,4 +1,4 @@
-package jp.mediahinge.spring.boot.app.form;
+package jp.mediahinge.spring.boot.app.bean;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class NLUForm extends BaseForm{
+public class NLUBean extends BaseBean{
 	  private String article_id;
 	  private List<ConceptsResult> concepts;
 	  private List<EntitiesResult> entities;

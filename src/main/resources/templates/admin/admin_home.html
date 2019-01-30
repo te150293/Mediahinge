@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>admin_home</title>
+<meta charset="UTF-8">
+
+<link rel="stylesheet" href="../../static/css/common.css">
+<link rel="stylesheet" href="../../static/css/admin_home.css">
+<!-- integrity,crossorigin属性はXSSを防ぐためにbootstrap,ver4から追加された -->
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+	integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+	crossorigin="anonymous"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+	integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+	crossorigin="anonymous"></script>
+</head>
+
+<body>
+	<header class="sticky-top">
+		<div class="header-contents">
+					<h2 id="title" class="">Media hinge</h2>
+					<!-- 検索フォーム -->
+					<form id="search_form" action="/" name="search" method="get" >
+						<dl class="search">
+							<dt>
+								<input type="text" name="search" value="" placeholder="Search"/>
+							</dt>
+							<dd>
+								<button>
+									<span><span class="overlay"></span></span>
+								</button>
+							</dd>
+						</dl>
+					</form>
+					<!-- 
+					<span class="idname">
+						<p>管理者ID : xxxxxx</p>
+					</span>
+					<span class="logout">
+						<a href="" class="link">ログアウト</a>
+					</span>
+					 -->
+				</div>
+	</header>
+	<div class="contents">
+		<div class="container-fluid content">
+			<div class="row p-5">
+				<div class="offset-md-2 col-md-8 offset-md-2">
+					<!-- タブボタン部分 -->
+					<ul class="nav nav-tabs">
+						<li class="nav-item"><a href="#yomiuri"
+							class="nav-link active" data-toggle="tab">読売</a></li>
+						<li class="nav-item"><a href="#asahi" class="nav-link"
+							data-toggle="tab">朝日</a></li>
+						<li class="nav-item"><a href="#mainichi" class="nav-link"
+							data-toggle="tab">毎日</a></li>
+					</ul>
+					<!--タブのコンテンツ部分-->
+					<div class="tab-content">
+						<div id="yomiuri" class="tab-pane active">
+							<ul>
+								<h4 class="heading">イプシロン打ち上げ成功…人工流れ星衛星を分離</h4>
+								<br>
+								<div>
+									宇宙航空研究開発機構（ＪＡＸＡジャクサ）の固体燃料ロケット「イプシロン」４号機（全長２６メートル）が１８日午前９時５０分、鹿児島県肝付きもつき町の内之浦宇宙空間観測所から打ち上げられた。搭載している企業や大学の民間衛星７基は、すべて正常に分離したことが確認され、打ち上げは成功した。イプシロンの打ち上げは２０１８年１月の３号機から１年ぶり。
+								</div>
+								<br>
+								<a href="https://www.yomiuri.co.jp/science/20190118-OYT1T50036.html?from=ytop_ylist" target="_blank">
+									元記事はこちら
+								</a>
+							</ul>
+						</div>
+						<div id="asahi" class="tab-pane">
+							<ul>
+								<h4 class="heading">イプシロン４号機打ち上げ成功 人工「流れ星」衛星など</h4>
+								<br>
+								<div>
+									人工的に「流れ星」を発生させる小型衛星など計７機を載せた固体燃料ロケット「イプシロン」４号機が１８日午前９時５０分、宇宙航空研究開発機構（ＪＡＸＡ）の内之浦宇宙空間観測所（鹿児島県肝付町）から打ち上げられた。高度約５００キロで全ての衛星を分離し、予定の軌道に投入することに成功した。
+								</div>
+								<br>
+								<a href="https://www.asahi.com/articles/ASM1D761GM1DULBJ009.html?iref=pc_rellink" target="_blank">
+									元記事はこちら
+								</a>
+							</ul>
+						</div>
+						<div id="mainichi" class="tab-pane">
+							<ul>
+								<h4 class="heading">イプシロン4号機打ち上げ成功 人工衛星7基を軌道に投入</h4>
+								<br>
+								<div>
+									宇宙航空研究開発機構（JAXA）は18日午前9時50分、7基の人工衛星を載せたイプシロンロケット4号機を、内之浦宇宙空間観測所（鹿児島県）から打ち上げた。7基は予定軌道に投入され、打ち上げは成功した。イプシロンの打ち上げは2018年1月以来4回目で、一度に複数の衛星を搭載するのは初めて。
+								</div>
+								<br>
+								<a href="https://mainichi.jp/articles/20190118/k00/00m/040/149000c" target="_blank">
+									元記事はこちら
+								</a>
+							</ul>
+						</div>
+					</div>
+					<div class="row">
+						<ul id="tag" class="col-md-10">
+							<span><image src="../../static/images/tag.png">
+								<span>JAXA</span></image></span>
+							<span><image src="../../static/images/tag.png">
+								<span>イプシロン</span></image></span>
+							<span><image src="../../static/images/tag.png">
+								<span>宇宙航空研究開発機構</span></image></span>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<hr width="70%">
+		
+		<!-- 
+		
+		<div class="container-fluid content">
+			<div class="row p-5">
+				<div class="offset-md-2 col-md-8 offset-md-2">
+					<!-- タブボタン部分
+					<ul class="nav nav-tabs">
+						<li class="nav-item"><a href="#yomiuri"
+							class="nav-link active" data-toggle="tab">読売</a></li>
+						<li class="nav-item"><a href="#asahi" class="nav-link"
+							data-toggle="tab">朝日</a></li>
+						<li class="nav-item"><a href="#mainichi" class="nav-link"
+							data-toggle="tab">毎日</a></li>
+					</ul>
+					タブのコンテンツ部分
+					<div class="tab-content">
+						<div id="yomiuri" class="tab-pane active">
+							<ul>
+								<h4 class="heading">イプシロン打ち上げ成功…人工流れ星衛星を分離</h4>
+								<br>
+								<div>
+									宇宙航空研究開発機構（ＪＡＸＡジャクサ）の固体燃料ロケット「イプシロン」４号機（全長２６メートル）が１８日午前９時５０分、鹿児島県肝付きもつき町の内之浦宇宙空間観測所から打ち上げられた。搭載している企業や大学の民間衛星７基は、すべて正常に分離したことが確認され、打ち上げは成功した。イプシロンの打ち上げは２０１８年１月の３号機から１年ぶり。
+								</div>
+								<br>
+								<a href="https://www.yomiuri.co.jp/science/20190118-OYT1T50036.html?from=ytop_ylist" target="_blank">
+									元記事はこちら
+								</a>
+							</ul>
+						</div>
+						<div id="asahi" class="tab-pane">
+							<ul>
+								<h4 class="heading">イプシロン４号機打ち上げ成功 人工「流れ星」衛星など</h4>
+								<br>
+								<div>
+									人工的に「流れ星」を発生させる小型衛星など計７機を載せた固体燃料ロケット「イプシロン」４号機が１８日午前９時５０分、宇宙航空研究開発機構（ＪＡＸＡ）の内之浦宇宙空間観測所（鹿児島県肝付町）から打ち上げられた。高度約５００キロで全ての衛星を分離し、予定の軌道に投入することに成功した。
+								</div>
+								<br>
+								<a href="https://www.asahi.com/articles/ASM1D761GM1DULBJ009.html?iref=pc_rellink" target="_blank">
+									元記事はこちら
+								</a>
+							</ul>
+						</div>
+						<div id="mainichi" class="tab-pane">
+							<ul>
+								<h4 class="heading">イプシロン4号機打ち上げ成功 人工衛星7基を軌道に投入</h4>
+								<br>
+								<div>
+									宇宙航空研究開発機構（JAXA）は18日午前9時50分、7基の人工衛星を載せたイプシロンロケット4号機を、内之浦宇宙空間観測所（鹿児島県）から打ち上げた。7基は予定軌道に投入され、打ち上げは成功した。イプシロンの打ち上げは2018年1月以来4回目で、一度に複数の衛星を搭載するのは初めて。
+								</div>
+								<br>
+								<a href="https://mainichi.jp/articles/20190118/k00/00m/040/149000c" target="_blank">
+									元記事はこちら
+								</a>
+							</ul>
+						</div>
+					</div>
+					<div class="row">
+						<ul id="tag" class="col-md-10">
+							<span><image src="../../static/images/tag.png">
+								<span>JAXA</span></image></span>
+							<span><image src="../../static/images/tag.png">
+								<span>イプシロン</span></image></span>
+							<span><image src="../../static/images/tag.png">
+								<span>宇宙航空研究開発機構</span></image></span>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<hr width="70%">
+		
+		<div class="container-fluid content">
+			<div class="row p-5">
+				<div class="offset-md-2 col-md-8 offset-md-2">
+					<!-- タブボタン部分
+					<ul class="nav nav-tabs">
+						<li class="nav-item"><a href="#yomiuri"
+							class="nav-link active" data-toggle="tab">読売</a></li>
+						<li class="nav-item"><a href="#asahi" class="nav-link"
+							data-toggle="tab">朝日</a></li>
+						<li class="nav-item"><a href="#mainichi" class="nav-link"
+							data-toggle="tab">毎日</a></li>
+					</ul>
+					<!--タブのコンテンツ部分
+					<div class="tab-content">
+						<div id="yomiuri" class="tab-pane active">
+							<ul>
+								<h4 class="heading">イプシロン打ち上げ成功…人工流れ星衛星を分離</h4>
+								<br>
+								<div>
+									宇宙航空研究開発機構（ＪＡＸＡジャクサ）の固体燃料ロケット「イプシロン」４号機（全長２６メートル）が１８日午前９時５０分、鹿児島県肝付きもつき町の内之浦宇宙空間観測所から打ち上げられた。搭載している企業や大学の民間衛星７基は、すべて正常に分離したことが確認され、打ち上げは成功した。イプシロンの打ち上げは２０１８年１月の３号機から１年ぶり。
+								</div>
+								<br>
+								<a href="https://www.yomiuri.co.jp/science/20190118-OYT1T50036.html?from=ytop_ylist" target="_blank">
+									元記事はこちら
+								</a>
+							</ul>
+						</div>
+						<div id="asahi" class="tab-pane">
+							<ul>
+								<h4 class="heading">イプシロン４号機打ち上げ成功 人工「流れ星」衛星など</h4>
+								<br>
+								<div>
+									人工的に「流れ星」を発生させる小型衛星など計７機を載せた固体燃料ロケット「イプシロン」４号機が１８日午前９時５０分、宇宙航空研究開発機構（ＪＡＸＡ）の内之浦宇宙空間観測所（鹿児島県肝付町）から打ち上げられた。高度約５００キロで全ての衛星を分離し、予定の軌道に投入することに成功した。
+								</div>
+								<br>
+								<a href="https://www.asahi.com/articles/ASM1D761GM1DULBJ009.html?iref=pc_rellink" target="_blank">
+									元記事はこちら
+								</a>
+							</ul>
+						</div>
+						<div id="mainichi" class="tab-pane">
+							<ul>
+								<h4 class="heading">イプシロン4号機打ち上げ成功 人工衛星7基を軌道に投入</h4>
+								<br>
+								<div>
+									宇宙航空研究開発機構（JAXA）は18日午前9時50分、7基の人工衛星を載せたイプシロンロケット4号機を、内之浦宇宙空間観測所（鹿児島県）から打ち上げた。7基は予定軌道に投入され、打ち上げは成功した。イプシロンの打ち上げは2018年1月以来4回目で、一度に複数の衛星を搭載するのは初めて。
+								</div>
+								<br>
+								<a href="https://mainichi.jp/articles/20190118/k00/00m/040/149000c" target="_blank">
+									元記事はこちら
+								</a>
+							</ul>
+						</div>
+					</div>
+					<div class="row">
+						<ul id="tag" class="col-md-10">
+							<span><image src="../../static/images/tag.png">
+								<span>JAXA</span></image></span>
+							<span><image src="../../static/images/tag.png">
+								<span>イプシロン</span></image></span>
+							<span><image src="../../static/images/tag.png">
+								<span>宇宙航空研究開発機構</span></image></span>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		 -->
+	</div>
+</body>
+</html>

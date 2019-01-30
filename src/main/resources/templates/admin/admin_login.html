@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<title>admin_login</title>
+<meta charset="UTF-8">
+
+<link rel="stylesheet" href="../../../static/css/common.css">
+<link rel="stylesheet" href="../../../static/css/admin_login.css">
+<!-- integrity,crossorigin属性はXSSを防ぐためにbootstrap,ver4から追加された -->
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+	integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+	crossorigin="anonymous"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+	integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+	crossorigin="anonymous"></script>
+</head>
+
+<body>
+	<header>
+		<div class="header-contents">
+			<h2 id="title">Media hinge</h2>
+		</div>
+	</header>
+
+	<div class="text-center">
+		<h2 class="title">ログイン</h2>
+		<hr width="50%">
+	</div>
+
+	<div class="contents">
+		<!-- ログイン失敗時の表示部分 -->
+		<div>
+			<p class="red text-center">IDまたはPasswordが間違っています。</p>
+		</div>
+
+		<div>
+			<span class="contname offset-md-4">id</span> <span class="content">
+				<input type="text" name="id" size="30">
+			</span>
+		</div>
+
+		<div>
+			<span class="contname offset-md-4">password</span> <span
+				class="content"> <input type="text" name="password" size="30">
+			</span>
+		</div>
+
+		<div class="text-center lbtn">
+			<button type="button" class="btn btn-default">ログイン</button>
+		</div>
+	</div>
+</body>
+</html>

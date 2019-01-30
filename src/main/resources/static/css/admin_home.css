@@ -1,0 +1,98 @@
+@charset "UTF-8";
+
+/*header*/
+.header-contents {
+	text-align: center;
+}
+
+a{
+	text-decoration-color:#FAFAD2;
+}
+
+/*検索フォーム*/
+#search_form {
+	display: inline-block;
+	line-height: 24px;
+	margin-left:100px;
+}
+
+dl.search {
+	position: relative;
+	background-color: #fff;
+	border: 1px solid #aaa;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	-o-border-radius: 6px;
+	-ms-border-radius: 6px;
+	border-radius: 6px;
+}
+
+dl.search dt {
+	margin-right: 40px;
+	padding: 8px 0 8px 8px;
+}
+
+dl.search dt input {
+	width: 100%;
+	height: 24px;
+	line-height: 24px;
+	background: none;
+	border: none;
+}
+
+dl.search dd {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+dl.search dd button {
+	display: block;
+	padding: 10px;
+	background: none;
+	border: none;
+}
+
+dl.search dd button span {
+	display: block;
+	width: 20px;
+	height: 20px;
+	background: url("../images/searchBt.png") no-repeat scroll 0 0;
+}
+
+/*管理者ID*/
+.idname{
+	display: inline-block;
+}
+
+/*ログアウト*/
+.logout{
+	display: inline-block;
+}
+
+/*報告一覧ボタン*/
+.reportbtn{
+	margin: 20px;
+}
+
+/*タグ*/
+#tag {
+	margin-top: 10px;
+	margin-left: 40px;
+}
+.tab-content {
+	background-color: #F5FFFA;
+}
+
+.heading{
+	font-weight: bold;
+	padding-top: 20px;
+}
+
+/*タグ検索後の枠線*/
+.textBox {
+border: 1px solid #ff0000;
+border-radius: 5px;
+padding: 5px;
+position: relative;
+}

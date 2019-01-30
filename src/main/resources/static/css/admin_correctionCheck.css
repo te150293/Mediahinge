@@ -1,0 +1,19 @@
+@charset "UTF-8";
+
+.title {
+	margin-top: 50px;
+}
+
+.lbtn {
+	margin-top: 10px;
+}
+
+/*管理者ID*/
+.idname{
+	display: inline-block;
+}
+
+/*ログアウト*/
+.logout{
+	display: inline-block;
+}

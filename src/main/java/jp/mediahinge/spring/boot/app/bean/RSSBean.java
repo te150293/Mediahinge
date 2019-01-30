@@ -1,11 +1,11 @@
-package jp.mediahinge.spring.boot.app.form;
+package jp.mediahinge.spring.boot.app.bean;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class RSSForm extends BaseForm{
+public class RSSBean extends BaseBean{
 	private String media;
 	private String url;
 	

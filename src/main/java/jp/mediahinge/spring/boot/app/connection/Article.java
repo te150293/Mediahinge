@@ -12,17 +12,17 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import jp.mediahinge.spring.boot.app.form.ArticleForm;
-import jp.mediahinge.spring.boot.app.form.RSSForm;
+import jp.mediahinge.spring.boot.app.bean.ArticleBean;
+import jp.mediahinge.spring.boot.app.bean.RSSBean;
 import jp.mediahinge.spring.boot.app.schedule.ScheduledMethods;
-import jp.mediahinge.spring.boot.app.service.CloudantArticleService;
+import jp.mediahinge.spring.boot.app.service.ArticleService;
 
 @Component
 public class Article {
 
 	Document document;
 	
-	private ArticleForm articleForm = new ArticleForm();
+	private ArticleBean articleForm = new ArticleBean();
 	private String type = "article";
 	private String media;
 	private String heading;
@@ -32,7 +32,7 @@ public class Article {
 	private String distribution_date;
 	private int topics_id = -1;
 
-	public void setArticle(RSSForm rssForm) throws Exception{
+	public void setArticle(RSSBean rssForm) throws Exception{
 
 		document = Jsoup.connect(rssForm.getUrl()).get();
 
@@ -76,12 +76,12 @@ public class Article {
 		articleForm.setTopics_id(topics_id);
 	}
 	
-	public ArticleForm getArticle() {
+	public ArticleBean getArticle() {
 		
 		return articleForm;
 	}
 	
-	public void insertArticle(CloudantArticleService articleService) throws Exception{
+	public void insertArticle(ArticleService articleService) throws Exception{
 		articleService.persist(articleForm);
 		Thread.sleep(400);
 		

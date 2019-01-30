@@ -15,15 +15,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import jp.mediahinge.spring.boot.app.form.ArticleForm;
-import jp.mediahinge.spring.boot.app.service.CloudantArticleService;
+import jp.mediahinge.spring.boot.app.bean.ArticleBean;
+import jp.mediahinge.spring.boot.app.service.ArticleService;
 
 @Controller
 @RequestMapping("articles")
 public class ArticleController {
 
 	@Autowired
-	CloudantArticleService service;
+	ArticleService service;
 
 	/**
 	 * ModelにFormを初期セットする
@@ -31,8 +31,8 @@ public class ArticleController {
 	 * @return ArticleForm
 	 */
 	@ModelAttribute 
-	ArticleForm setUpForm() {
-		return new ArticleForm();
+	ArticleBean setUpForm() {
+		return new ArticleBean();
 	}
 
 	/**
@@ -50,11 +50,11 @@ public class ArticleController {
 			return "articles/persist";
 		}
 
-		List<ArticleForm> articlesList = new ArrayList<ArticleForm>();
-		for (ArticleForm doc : service.getAll()) {
+		List<ArticleBean> articlesList = new ArrayList<ArticleBean>();
+		for (ArticleBean doc : service.getAll()) {
 			String _id = doc.get_id();
 			if (_id != null){
-				ArticleForm form = new ArticleForm();
+				ArticleBean form = new ArticleBean();
 				form.set_id(_id);;
 				articlesList.add(form);
 			}
@@ -68,14 +68,8 @@ public class ArticleController {
 	public String test(Model model) {
 		Date today = new Date();
 		SimpleDateFormat id_format = new SimpleDateFormat("yyyyMMddHHmmss");
-		ArticleForm articleForm = new ArticleForm();
-//		articleForm.setArticle_id(id_format.format(today));
+		ArticleBean articleForm = new ArticleBean();
 		articleForm.setMedia("test");
-//		articleForm.setHeading("test");
-//		articleForm.setFirst_paragraph("test");
-//		articleForm.setText("test");
-//		articleForm.setUrl("test");
-//		articleForm.setDistribution_date("test");
 		System.out.println("debug:insert test data");
 		service.persist(articleForm);
 		System.out.println("debug:successfully insert test data");

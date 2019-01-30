@@ -10,24 +10,25 @@ import com.ibm.watson.developer_cloud.natural_language_understanding.v1.NaturalL
 import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.AnalysisResults;
 import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.AnalyzeOptions;
 import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.ConceptsOptions;
+import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.ConceptsResult;
 import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.EntitiesOptions;
 import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.EntitiesResult;
 import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.Features;
 import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.KeywordsOptions;
 import com.ibm.watson.developer_cloud.service.security.IamOptions;
 
-import jp.mediahinge.spring.boot.app.form.ArticleForm;
-import jp.mediahinge.spring.boot.app.form.NLUForm;
-import jp.mediahinge.spring.boot.app.service.CloudantNLUService;
+import jp.mediahinge.spring.boot.app.bean.ArticleBean;
+import jp.mediahinge.spring.boot.app.bean.NLUBean;
+import jp.mediahinge.spring.boot.app.service.NLUService;
 
 @Component
 public class NLU {
 
-	private NLUForm nluForm = new NLUForm();
-    
-	public void setNLUForm(ArticleForm articleForm, NLUForm onlyResults) {
-	    String language = "ja";
-	    
+	private NLUBean nluForm = new NLUBean();
+
+	public void setNLUForm(ArticleBean articleForm, NLUBean onlyPythonResults) {
+		String language = "ja";
+
 		KeywordsOptions keywords = new KeywordsOptions.Builder().build();
 		EntitiesOptions entities = new EntitiesOptions.Builder().build();
 		ConceptsOptions concepts = new ConceptsOptions.Builder().build();
@@ -50,8 +51,8 @@ public class NLU {
 
 		NaturalLanguageUnderstanding nlu = new NaturalLanguageUnderstanding("2018-03-16", options);
 
-	    AnalysisResults response;
-		
+		AnalysisResults response;
+
 		response = nlu
 				.analyze(parameters)
 				.execute();
@@ -63,9 +64,10 @@ public class NLU {
 		nluForm.setKeywords(response.getKeywords());
 		
 		//Pythonの解析結果とNLUの解析結果を結合
-		if(onlyResults != null) {//Pythonの解析結果がnullでない場合
+		//Pythonの解析結果がnullでない場合
+		if(onlyPythonResults != null) {
 			//最終的にsetするresultsのリスト
-			List<String> combinedResults = onlyResults.getResults();
+			List<String> combinedResults = onlyPythonResults.getResults();
 			//Entities
 			List<EntitiesResult> entitiesList = nluForm.getEntities();
 			for(Object obj : entitiesList) {
@@ -83,11 +85,19 @@ public class NLU {
 			nluForm.setResults(notSet);
 		}
 	}
-	public NLUForm getNLUForm() {
+	public NLUBean getNLUForm() {
 		return nluForm;
 	}
 	
-	public void insertAnalysisResults(CloudantNLUService nluService) throws Exception{
+	public List<ConceptsResult> getConceptsResults(){
+		return nluForm.getConcepts();
+	}
+
+	public List<EntitiesResult> getEntitiesResult(){
+		return nluForm.getEntities();
+	}
+	
+	public void insertAnalysisResults(NLUService nluService) throws Exception{
 		nluService.persist(nluForm);
 		Thread.sleep(400);
 		
