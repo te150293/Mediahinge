@@ -105,6 +105,34 @@ public class MainController {
 
 	@GetMapping(path = "search")
 	public String search(Model model, @RequestParam("tag") String tag) {
+		List<TopicBean> resultTopicsBean = topicService.searchByTag(tag);
+
+		List<TopicForm> topicFormList = new ArrayList<>();
+		for(Object obj1 : resultTopicsBean) {
+			TopicBean topicBean = (TopicBean) obj1;
+			if(topicBean.getArticle_list().size() > 1) {
+				TopicForm topicForm = new TopicForm();
+				topicForm.setTopic_id(topicBean.getTopic_id());
+				topicForm.setTags(topicBean.getTags());
+				
+				List<ArticleForm> articleFormList = new ArrayList<>();
+				for(Object obj2 : topicBean.getArticle_list()) {
+					Score score = (Score)obj2;
+					ArticleBean articleBean = articleService.get(score.getArticle_id());
+					ArticleForm articleForm = new ArticleForm();
+					articleForm.set_id(articleBean.get_id());
+					articleForm.setMedia(articleBean.getMedia());
+					articleForm.setFirst_paragraph(articleBean.getFirst_paragraph());
+					articleForm.setHeading(articleBean.getHeading());
+					articleForm.setUrl(articleBean.getUrl());
+					
+					articleFormList.add(articleForm);
+				}
+				topicForm.setArticles(articleFormList);
+				topicFormList.add(topicForm);
+			}
+		}
+		model.addAttribute("topics",topicFormList);
 
 		return "users/user_top";
 	}
