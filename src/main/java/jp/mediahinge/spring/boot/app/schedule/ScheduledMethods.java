@@ -22,23 +22,24 @@ import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
 import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.ConceptsResult;
+import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.EntitiesResult;
 
+import jp.mediahinge.spring.boot.app.bean.ArticleBean;
+import jp.mediahinge.spring.boot.app.bean.NLUBean;
+import jp.mediahinge.spring.boot.app.bean.RSSBean;
+import jp.mediahinge.spring.boot.app.bean.Score;
+import jp.mediahinge.spring.boot.app.bean.TopicBean;
 import jp.mediahinge.spring.boot.app.connection.Analyzer;
 import jp.mediahinge.spring.boot.app.connection.Article;
 import jp.mediahinge.spring.boot.app.connection.NLU;
 import jp.mediahinge.spring.boot.app.connection.RSS;
 import jp.mediahinge.spring.boot.app.connection.Topic;
-import jp.mediahinge.spring.boot.app.form.ArticleForm;
-import jp.mediahinge.spring.boot.app.form.HighestScoreTopic;
-import jp.mediahinge.spring.boot.app.form.NLUForm;
-import jp.mediahinge.spring.boot.app.form.RSSForm;
-import jp.mediahinge.spring.boot.app.form.RateForm;
-import jp.mediahinge.spring.boot.app.form.Score;
-import jp.mediahinge.spring.boot.app.form.TopicForm;
 import jp.mediahinge.spring.boot.app.service.ArticleService;
 import jp.mediahinge.spring.boot.app.service.NLUService;
 import jp.mediahinge.spring.boot.app.service.RSSService;
 import jp.mediahinge.spring.boot.app.service.TopicService;
+import jp.mediahinge.spring.boot.app.temp_class.HighestScoreTopic;
+import jp.mediahinge.spring.boot.app.temp_class.RateForm;
 
 
 @Component
@@ -56,10 +57,10 @@ public class ScheduledMethods {
 	@Autowired
 	private TopicService topicService;
 
-	private List<NLUForm> nluFormList = new ArrayList<>();
+	private List<NLUBean> nluFormList = new ArrayList<>();
 
-	private static int articleCounter = 0;
-	private static int rssCounter = 0;
+	private static int articleCounter = 76;
+	private static int rssCounter = 95;
 
 	private static int topic_id = 1;
 
@@ -73,15 +74,15 @@ public class ScheduledMethods {
 
 		rss.setRSSList(rssService);
 		rss.insertRSS(rssService);
-		List<RSSForm> insertedRSSList = rss.getRSSList();
+		List<RSSBean> insertedRSSList = rss.getRSSList();
 
 		for(Object obj1 :insertedRSSList) {
-			RSSForm rssForm = (RSSForm) obj1;
+			RSSBean rssForm = (RSSBean) obj1;
 
 			Article article = new Article();
 			article.setArticle(rssForm);
 
-			ArticleForm tempArticleForm = article.getArticle();
+			ArticleBean tempArticleForm = article.getArticle();
 			if(tempArticleForm.getType()!= null && tempArticleForm.getText() != null) {
 				article.insertArticle(articleService);
 				this.incrementArticleCounter();
@@ -90,7 +91,7 @@ public class ScheduledMethods {
 				//Pythonに新着URLを送信
 				String urlString = "https://mhanalysispython.mybluemix.net/";
 				HttpURLConnection httpURLConnection = null;
-				NLUForm resultsFromPython = null;
+				NLUBean resultsFromPython = null;
 				
 				//Python接続処理
 
@@ -103,12 +104,13 @@ public class ScheduledMethods {
 
 				//temp_ArticleFormのConceptsを取得
 				List<ConceptsResult> tempConcepts = nlu.getConceptsResults();
+				List<EntitiesResult> tempEntities = nlu.getEntitiesResult();
 				Topic topic = new Topic();
 				//過去二日間分のTopicを取得
-				List<TopicForm> topicList = topic.getPastTopics(topicService);
+				List<TopicBean> topicList = topic.getPastTopics(topicService);
 				if(topicList == null) {
 					//Topic新規作成処理
-					topic.createTopic(topicService, tempArticleForm, tempConcepts);
+					topic.createTopic(topicService, tempArticleForm, tempConcepts, tempEntities);
 					Thread.sleep(400);
 
 				} else {
@@ -121,7 +123,7 @@ public class ScheduledMethods {
 
 					//temp_conceptsとtopicのTagsからScoreを算出
 					for(Object obj2 : topicList) {
-						TopicForm tempTopic = (TopicForm) obj2;
+						TopicBean tempTopic = (TopicBean) obj2;
 						
 						double tempScore = 0;
 						
@@ -139,17 +141,20 @@ public class ScheduledMethods {
 						
 						if(highestScore.getScore() < tempScore) {
 							highestScoreTopic.setTopicForm(tempTopic);
+							
 							highestScore.setScore(tempScore);
+							highestScoreTopic.setScore(highestScore);
 						}
 					}
 					
-					if(highestScore.getScore() < 0.75) {
+					if(highestScore.getScore() < 1.2) {
 						//tempArticleをグループ化できるトピック無しとみなす
 						//Topic新規作成処理
-						topic.createTopic(topicService, tempArticleForm, tempConcepts);
+						topic.createTopic(topicService, tempArticleForm, tempConcepts, tempEntities);
 						Thread.sleep(400);
 					} else {
-						topic.updateTopic(topicService, highestScoreTopic);
+						topic.updateTopic(topicService, highestScoreTopic, tempConcepts, tempEntities);
+						Thread.sleep(400);
 					}
 					
 				}
@@ -327,7 +332,7 @@ public class ScheduledMethods {
 //	@Scheduled(cron = "0 20 * * * *")
 	public void registrationRequest() throws Exception{
 		for(Object obj : nluFormList) {
-			NLUForm nluForm = (NLUForm) obj;
+			NLUBean nluForm = (NLUBean) obj;
 
 			String urlString = "https://mhanalysispython.mybluemix.net/";
 			HttpURLConnection httpURLConnection = null;
@@ -368,13 +373,13 @@ public class ScheduledMethods {
 
 //	@Scheduled(cron = "0 30 * * * *")
 	public void requireRate() throws Exception{
-		List<ArticleForm> notGroupedArticleList = articleService.getNotGroupedArticle();
+		List<ArticleBean> notGroupedArticleList = articleService.getNotGroupedArticle();
 
 		String urlString = "https://mhanalysispython.mybluemix.net/";
 		HttpURLConnection httpURLConnection = null;
 		RateForm rateForm = null;//受信したURL格納用
 		for(Object obj : notGroupedArticleList) {
-			ArticleForm articleForm0 = (ArticleForm) obj;
+			ArticleBean articleForm0 = (ArticleBean) obj;
 
 			try {
 				//Analyzer への connection の設定を行う
@@ -417,7 +422,7 @@ public class ScheduledMethods {
 
 				//一致率によってグループ化するか判定する処理を記述する
 
-				ArticleForm articleForm1 = articleService.get(rateForm.get_id1());
+				ArticleBean articleForm1 = articleService.get(rateForm.get_id1());
 				Thread.sleep(400);
 				if(articleForm1.getHighest_rate() <= rateForm.getRate1()) {
 					articleForm0.setHighest_rate(rateForm.getRate1());
@@ -425,7 +430,7 @@ public class ScheduledMethods {
 					articleForm0.setTopics_id(topic_id);
 					articleForm1.setTopics_id(topic_id);
 				}
-				ArticleForm articleForm2 = articleService.get(rateForm.get_id2());
+				ArticleBean articleForm2 = articleService.get(rateForm.get_id2());
 				Thread.sleep(400);
 				if(articleForm2.getHighest_rate() <= rateForm.getRate2()) {
 					articleForm0.setHighest_rate(rateForm.getRate2());
@@ -444,3 +449,5 @@ public class ScheduledMethods {
 		}
 	}
 }
+
+

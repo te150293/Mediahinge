@@ -9,42 +9,42 @@ import org.springframework.stereotype.Service;
 
 import com.cloudant.client.api.query.QueryResult;
 
-import jp.mediahinge.spring.boot.app.form.ArticleForm;
-import jp.mediahinge.spring.boot.app.form.RSSForm;
-import jp.mediahinge.spring.boot.app.form.TopicForm;
+import jp.mediahinge.spring.boot.app.bean.ArticleBean;
+import jp.mediahinge.spring.boot.app.bean.RSSBean;
+import jp.mediahinge.spring.boot.app.bean.TopicBean;
 
 @Service
 public class ArticleService extends CloudantService{
 
-	public Collection<ArticleForm> getAll(){
-		List<ArticleForm> docs;
+	public Collection<ArticleBean> getAll(){
+		List<ArticleBean> docs;
 		try {
-			docs = getDB().getAllDocsRequestBuilder().includeDocs(true).build().getResponse().getDocsAs(ArticleForm.class);
+			docs = getDB().getAllDocsRequestBuilder().includeDocs(true).build().getResponse().getDocsAs(ArticleBean.class);
 		} catch (IOException e) {
 			return null;
 		}
 		return docs;
 	}
 
-	public ArticleForm get(String id) {
-		return getDB().find(ArticleForm.class, id);
+	public ArticleBean get(String id) {
+		return getDB().find(ArticleBean.class, id);
 	}
 
-	public ArticleForm persist(ArticleForm articleForm) {
+	public ArticleBean persist(ArticleBean articleForm) {
 		String id = getDB().save(articleForm).getId();
-		return getDB().find(ArticleForm.class, id);
+		return getDB().find(ArticleBean.class, id);
 	}
 
-	public ArticleForm updateTopics_id(String id, ArticleForm newArticleForm) {
-		ArticleForm articleForm = getDB().find(ArticleForm.class, id);
+	public ArticleBean updateTopics_id(String id, ArticleBean newArticleForm) {
+		ArticleBean articleForm = getDB().find(ArticleBean.class, id);
 		articleForm.setTopics_id(newArticleForm.getTopics_id());
 		getDB().update(articleForm);
-		return getDB().find(ArticleForm.class, id);
+		return getDB().find(ArticleBean.class, id);
 
 	}
 
 	public void delete(String id) {
-		ArticleForm articleForm = getDB().find(ArticleForm.class, id);
+		ArticleBean articleForm = getDB().find(ArticleBean.class, id);
 		getDB().remove(id, articleForm.get_rev());
 
 	}
@@ -58,7 +58,7 @@ public class ArticleService extends CloudantService{
 	 * 
 	 * @return search results
 	 */
-	public List<ArticleForm> getNotGroupedArticle() {
+	public List<ArticleBean> getNotGroupedArticle() {
 		String selector = 
 			"{\r\n" + 
 			"   \"selector\": {\r\n" + 
@@ -81,10 +81,10 @@ public class ArticleService extends CloudantService{
 			"   ],\r\n" + 
 			"   \"limit\": 20\r\n" + 
 			"}";
-	System.out.println("DEBUG:" + getDB().query(selector, RSSForm.class));
-	QueryResult queryResult = getDB().query(selector, RSSForm.class);
+	System.out.println("DEBUG:" + getDB().query(selector, RSSBean.class));
+	QueryResult queryResult = getDB().query(selector, RSSBean.class);
 	System.out.println("DEBUG:" + queryResult.getDocs());
-	List<ArticleForm> articleList = queryResult.getDocs();
+	List<ArticleBean> articleList = queryResult.getDocs();
 	return articleList;
 
 	}
@@ -95,7 +95,7 @@ public class ArticleService extends CloudantService{
 	 * 
 	 * @return List<ArticleForm>.
 	 */
-	public List<ArticleForm> getArticlesSortedByTopics_id() {
+	public List<ArticleBean> getArticlesSortedByTopics_id() {
 		String selector = 
 			"{\r\n" + 
 			"   \"selector\": {\r\n" + 
@@ -127,11 +127,11 @@ public class ArticleService extends CloudantService{
 			"   ],\r\n" + 
 			"   \"limit\": 30\r\n" + 
 			"}";
-		System.out.println("DEBUG:" + getDB().query(selector, ArticleForm.class));
-		QueryResult queryResult = getDB().query(selector, ArticleForm.class);
+		System.out.println("DEBUG:" + getDB().query(selector, ArticleBean.class));
+		QueryResult queryResult = getDB().query(selector, ArticleBean.class);
 		System.out.println("DEBUG:" + queryResult.getDocs());
 		//resultsは検索結果
-		List<ArticleForm> results = queryResult.getDocs();
+		List<ArticleBean> results = queryResult.getDocs();
 		return results;
 	}
 }

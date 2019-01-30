@@ -8,22 +8,22 @@ import org.springframework.stereotype.Service;
 
 import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.ConceptsResult;
 
-import jp.mediahinge.spring.boot.app.form.ArticleForm;
-import jp.mediahinge.spring.boot.app.form.NLUForm;
-import jp.mediahinge.spring.boot.app.form.TopicForm;
+import jp.mediahinge.spring.boot.app.bean.ArticleBean;
+import jp.mediahinge.spring.boot.app.bean.NLUBean;
+import jp.mediahinge.spring.boot.app.bean.TopicBean;
 import jp.mediahinge.spring.boot.app.service.NLUService;
 
 public class Topics {
 
-	private List<TopicForm> topicList = new ArrayList();
+	private List<TopicBean> topicList = new ArrayList();
 	NLUService service = null;
 
 	/**
 	 * グループ化して自身のtopicListにセット
 	 */
-	public void grouping(List<ArticleForm> sortedResults, NLUService service){
+	public void grouping(List<ArticleBean> sortedResults, NLUService service){
 		for(Object object : sortedResults) {
-			ArticleForm article = (ArticleForm) object;
+			ArticleBean article = (ArticleBean) object;
 
 			//topicListが空だった場合
 			if (topicList == null || topicList.isEmpty()) {
@@ -32,7 +32,7 @@ public class Topics {
 				//topicListが空でなかった場合
 			} else {
 				//topicListの末尾を取得
-				TopicForm lastTopic = topicList.get(topicList.size()-1);
+				TopicBean lastTopic = topicList.get(topicList.size()-1);
 
 				if(lastTopic.getTopic_id() == article.getTopics_id()) {
 					this.updateLastTopic(article, service);
@@ -43,14 +43,14 @@ public class Topics {
 		}
 	}
 
-	public void addTopic(ArticleForm article, NLUService nluService) {
+	public void addTopic(ArticleBean article, NLUService nluService) {
 		List<String> list = new ArrayList();
 		list.add(article.get_id());
-		TopicForm topic = new TopicForm();
+		TopicBean topic = new TopicBean();
 //		topic.setArticle_list(list);
 		topic.setTopic_id(article.getTopics_id());
 		
-		List<NLUForm> analysisResults = nluService.searchByArticle_id(article.get_id());
+		List<NLUBean> analysisResults = nluService.searchByArticle_id(article.get_id());
 		List<String> tags = new ArrayList();
 		
 		System.out.println("analysisResults:" + analysisResults + "\n");
@@ -61,14 +61,14 @@ public class Topics {
 		topicList.add(topic);
 	}
 	
-	public void updateLastTopic(ArticleForm article, NLUService service) {
-		TopicForm lastTopic = topicList.get(topicList.size()-1);
+	public void updateLastTopic(ArticleBean article, NLUService service) {
+		TopicBean lastTopic = topicList.get(topicList.size()-1);
 //		List<String> list = lastTopic.getArticle_list();
 //		List<String> tags = lastTopic.getTags();
 //		list.add(article.get_id());
 //		lastTopic.setArticle_list(list);
 
-		List<NLUForm> analysisResults = service.searchByArticle_id(article.get_id());
+		List<NLUBean> analysisResults = service.searchByArticle_id(article.get_id());
 		
 		System.out.println("analysisResults:" + analysisResults + "\n");
 		if(analysisResults.size() > 0) {
@@ -79,11 +79,11 @@ public class Topics {
 		
 	}
 	
-	public List<TopicForm> getTopicList(){
+	public List<TopicBean> getTopicList(){
 		return topicList;
 	}
 	
-	public TopicForm setTags(TopicForm topic, NLUForm nlu) {
+	public TopicBean setTags(TopicBean topic, NLUBean nlu) {
 		List<String> tags = topic.getTags();
 		List<ConceptsResult> concepts = nlu.getConcepts();
 		

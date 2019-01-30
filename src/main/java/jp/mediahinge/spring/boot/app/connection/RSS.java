@@ -17,14 +17,14 @@ import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
-import jp.mediahinge.spring.boot.app.form.RSSForm;
+import jp.mediahinge.spring.boot.app.bean.RSSBean;
 import jp.mediahinge.spring.boot.app.schedule.ScheduledMethods;
 import jp.mediahinge.spring.boot.app.service.RSSService;
 
 @Component
 public class RSS {
 
-	private List<RSSForm> rssList = new ArrayList<>();
+	private List<RSSBean> rssList = new ArrayList<>();
 
 	public void setRSSList(RSSService rssService) throws Exception{
 
@@ -66,7 +66,7 @@ public class RSS {
 			for (Object obj : feed.getEntries()) {
 				SyndEntry entry = (SyndEntry) obj;
 				
-				RSSForm rssForm = new RSSForm();
+				RSSBean rssForm = new RSSBean();
 				rssForm.setType("rss");
 				if (i == 0) {
 					rssForm.setMedia("yomiuri");
@@ -113,7 +113,7 @@ public class RSS {
 
 	}
 
-	public List<RSSForm> getRSSList(){
+	public List<RSSBean> getRSSList(){
 		return rssList;
 	}
 
@@ -122,7 +122,7 @@ public class RSS {
 		System.out.println("Started inserting rss data!");
 
 		for(Object obj :rssList) {
-			RSSForm rssForm = (RSSForm)obj;
+			RSSBean rssForm = (RSSBean)obj;
 			rssService.persist(rssForm);
 			Thread.sleep(400);
 		}

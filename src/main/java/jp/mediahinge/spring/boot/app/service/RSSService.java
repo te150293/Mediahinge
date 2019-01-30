@@ -9,23 +9,23 @@ import org.springframework.stereotype.Service;
 import com.cloudant.client.api.query.*;
 import com.cloudant.client.api.query.QueryBuilder;
 
-import jp.mediahinge.spring.boot.app.form.RSSForm;
+import jp.mediahinge.spring.boot.app.bean.RSSBean;
 
 @Service
 public class RSSService extends CloudantService{
 
-	public Collection<RSSForm> getAll(){
-		List<RSSForm> docs;
+	public Collection<RSSBean> getAll(){
+		List<RSSBean> docs;
 		try {
-			docs = getDB().getAllDocsRequestBuilder().includeDocs(true).build().getResponse().getDocsAs(RSSForm.class);
+			docs = getDB().getAllDocsRequestBuilder().includeDocs(true).build().getResponse().getDocsAs(RSSBean.class);
 		} catch (IOException e) {
 			return null;
 		}
 		return docs;
 	}
 
-	public RSSForm get(String id) {
-		return getDB().find(RSSForm.class, id);
+	public RSSBean get(String id) {
+		return getDB().find(RSSBean.class, id);
 	}
 
 	/**
@@ -33,7 +33,7 @@ public class RSSService extends CloudantService{
 	 * 
 	 * @return search results
 	 */
-	public List<RSSForm> searchURL(String url) {
+	public List<RSSBean> searchURL(String url) {
 		String selector = 
 				"{\r\n" + 
 				"   \"selector\": {\r\n" + 
@@ -57,28 +57,28 @@ public class RSSService extends CloudantService{
 				"      \"url\"\r\n" + 
 				"   ]\r\n" + 
 				"}";
-		System.out.println("DEBUG:" + getDB().query(selector, RSSForm.class));
-		QueryResult queryResult = getDB().query(selector, RSSForm.class);
+		System.out.println("DEBUG:" + getDB().query(selector, RSSBean.class));
+		QueryResult queryResult = getDB().query(selector, RSSBean.class);
 		System.out.println("DEBUG:" + queryResult.getDocs());
-		List<RSSForm> rssList = queryResult.getDocs();
+		List<RSSBean> rssList = queryResult.getDocs();
 		return rssList;
 	}
 
-	public RSSForm persist(RSSForm RSSForm) {
+	public RSSBean persist(RSSBean RSSForm) {
 		String id = getDB().save(RSSForm).getId();
-		return getDB().find(RSSForm.class, id);
+		return getDB().find(RSSBean.class, id);
 	}
 
-	public RSSForm update(String id, RSSForm newRSSForm) {
-		RSSForm RSSForm = getDB().find(RSSForm.class, id);
+	public RSSBean update(String id, RSSBean newRSSForm) {
+		RSSBean RSSForm = getDB().find(RSSBean.class, id);
 		RSSForm.setUrl(newRSSForm.getUrl());
 		getDB().update(RSSForm);
-		return getDB().find(RSSForm.class, id);
+		return getDB().find(RSSBean.class, id);
 
 	}
 
 	public void delete(String id) {
-		RSSForm RSSForm = getDB().find(RSSForm.class, id);
+		RSSBean RSSForm = getDB().find(RSSBean.class, id);
 		getDB().remove(id, RSSForm.get_rev());
 
 	}

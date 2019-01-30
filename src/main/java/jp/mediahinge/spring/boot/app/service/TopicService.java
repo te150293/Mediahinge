@@ -10,42 +10,41 @@ import org.springframework.stereotype.Service;
 
 import com.cloudant.client.api.query.QueryResult;
 
-import jp.mediahinge.spring.boot.app.form.ArticleForm;
-import jp.mediahinge.spring.boot.app.form.TopicForm;
-import jp.mediahinge.spring.boot.app.form.TopicForm;
+import jp.mediahinge.spring.boot.app.bean.ArticleBean;
+import jp.mediahinge.spring.boot.app.bean.TopicBean;
 
 @Service
 public class TopicService extends CloudantService{
 
-	public Collection<TopicForm> getAll(){
-		List<TopicForm> docs;
+	public Collection<TopicBean> getAll(){
+		List<TopicBean> docs;
 		try {
-			docs = getDB().getAllDocsRequestBuilder().includeDocs(true).build().getResponse().getDocsAs(TopicForm.class);
+			docs = getDB().getAllDocsRequestBuilder().includeDocs(true).build().getResponse().getDocsAs(TopicBean.class);
 		} catch (IOException e) {
 			return null;
 		}
 		return docs;
 	}
 
-	public TopicForm get(String id) {
-		return getDB().find(TopicForm.class, id);
+	public TopicBean get(String id) {
+		return getDB().find(TopicBean.class, id);
 	}
 
-	public TopicForm persist(TopicForm topicForm) {
+	public TopicBean persist(TopicBean topicForm) {
 		String id = getDB().save(topicForm).getId();
-		return getDB().find(TopicForm.class, id);
+		return getDB().find(TopicBean.class, id);
 	}
 	
 
-	public TopicForm updateTopics_id(String id, TopicForm newTopicForm) {
-		TopicForm topicForm = getDB().find(TopicForm.class, id);
+	public TopicBean updateTopics_id(String id, TopicBean newTopicForm) {
+		TopicBean topicForm = getDB().find(TopicBean.class, id);
 		topicForm.setArticle_list(newTopicForm.getArticle_list());
 		getDB().update(topicForm);
-		return getDB().find(TopicForm.class, id);
+		return getDB().find(TopicBean.class, id);
 	}
 
 	public void delete(String id) {
-		TopicForm TopicForm = getDB().find(TopicForm.class, id);
+		TopicBean TopicForm = getDB().find(TopicBean.class, id);
 		getDB().remove(id, TopicForm.get_rev());
 
 	}
@@ -54,28 +53,29 @@ public class TopicService extends CloudantService{
 		return getAll().size();
 	}
 	
-	public List<TopicForm> getPastTopics(int yes_yesterday){
+	public List<TopicBean> getRecentTopics(int yes_yesterday){
 		List<String> fields = new ArrayList<>();
 		fields.add("topic_id");
 		fields.add("article_list");
 		fields.add("tags");
 		
-		String selector = Selector.buildSelector("topic", "topic_id", "gte", yes_yesterday, fields);
+		String selector = Selector.buildSelector("topic", "topic_id", "gte", yes_yesterday, fields, "topic_id", "desc");
 
-		QueryResult queryResult = getDB().query(selector, TopicForm.class);
-		List<TopicForm> topicList = queryResult.getDocs();
+		System.out.println(selector);
+		QueryResult queryResult = getDB().query(selector, TopicBean.class);
+		List<TopicBean> topicList = queryResult.getDocs();
 		return topicList;
 	}
 
-	public TopicForm searchByTopic_id(int topic_id){
+	public TopicBean searchByTopic_id(int topic_id){
 		List<String> fields = new ArrayList<>();
 		fields.add("topic_id");
 		fields.add("article_list");
 		fields.add("tags");
 		String selector = Selector.buildSelector("topic", "topic_id", "eq", topic_id, fields);
 
-		QueryResult queryResult = getDB().query(selector, TopicForm.class);
-		List<TopicForm> topicList = queryResult.getDocs();
+		QueryResult queryResult = getDB().query(selector, TopicBean.class);
+		List<TopicBean> topicList = queryResult.getDocs();
 		if(!topicList.isEmpty()) {
 			return topicList.get(0);
 		}else {

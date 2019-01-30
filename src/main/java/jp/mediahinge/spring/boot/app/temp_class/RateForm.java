@@ -1,4 +1,4 @@
-package jp.mediahinge.spring.boot.app.form;
+package jp.mediahinge.spring.boot.app.temp_class;
 
 import lombok.Data;
 

@@ -8,34 +8,34 @@ import org.springframework.stereotype.Service;
 
 import com.cloudant.client.api.query.QueryResult;
 
-import jp.mediahinge.spring.boot.app.form.ArticleForm;
-import jp.mediahinge.spring.boot.app.form.NLUForm;
-import jp.mediahinge.spring.boot.app.form.RSSForm;
+import jp.mediahinge.spring.boot.app.bean.ArticleBean;
+import jp.mediahinge.spring.boot.app.bean.NLUBean;
+import jp.mediahinge.spring.boot.app.bean.RSSBean;
 
 @Service
 public class NLUService extends CloudantService{
 
-	public Collection<NLUForm> getAll(){
-		List<NLUForm> docs;
+	public Collection<NLUBean> getAll(){
+		List<NLUBean> docs;
 		try {
-			docs = getDB().getAllDocsRequestBuilder().includeDocs(true).build().getResponse().getDocsAs(NLUForm.class);
+			docs = getDB().getAllDocsRequestBuilder().includeDocs(true).build().getResponse().getDocsAs(NLUBean.class);
 		} catch (IOException e) {
 			return null;
 		}
 		return docs;
 	}
 
-	public NLUForm get(String id) {
-		return getDB().find(NLUForm.class, id);
+	public NLUBean get(String id) {
+		return getDB().find(NLUBean.class, id);
 	}
 
-	public NLUForm persist(NLUForm NLUForm) {
+	public NLUBean persist(NLUBean NLUForm) {
 		String id = getDB().save(NLUForm).getId();
-		return getDB().find(NLUForm.class, id);
+		return getDB().find(NLUBean.class, id);
 	}
 
 	public void delete(String id) {
-		NLUForm NLUForm = getDB().find(NLUForm.class, id);
+		NLUBean NLUForm = getDB().find(NLUBean.class, id);
 		getDB().remove(id, NLUForm.get_rev());
 
 	}
@@ -49,7 +49,7 @@ public class NLUService extends CloudantService{
 	 * 
 	 * @return search results
 	 */
-	public List<NLUForm> searchByArticle_id(String article_id) {
+	public List<NLUBean> searchByArticle_id(String article_id) {
 		String selector = 
 			"{\r\n" + 
 			"   \"selector\": {\r\n" + 
@@ -73,8 +73,8 @@ public class NLUService extends CloudantService{
 			"      \"results\"\r\n" + 
 			"   ]\r\n" + 
 			"}";
-	QueryResult queryResult = getDB().query(selector, NLUForm.class);
-	List<NLUForm> nluList = queryResult.getDocs();
+	QueryResult queryResult = getDB().query(selector, NLUBean.class);
+	List<NLUBean> nluList = queryResult.getDocs();
 	return nluList;
 	}
 }

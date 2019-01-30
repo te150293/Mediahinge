@@ -5,13 +5,8 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class TopicForm extends BaseForm{
-	/**
-	 * topic id
-	 * 
-	 * format:yyyyMMddxxx
-	 */
+public class TopicForm {
 	private int topic_id;
-	private List<Score> article_list;
+	private List<ArticleForm> articles;
 	private List<String> tags;
 }

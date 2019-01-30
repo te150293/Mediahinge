@@ -17,16 +17,16 @@ import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.Fe
 import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.KeywordsOptions;
 import com.ibm.watson.developer_cloud.service.security.IamOptions;
 
-import jp.mediahinge.spring.boot.app.form.ArticleForm;
-import jp.mediahinge.spring.boot.app.form.NLUForm;
+import jp.mediahinge.spring.boot.app.bean.ArticleBean;
+import jp.mediahinge.spring.boot.app.bean.NLUBean;
 import jp.mediahinge.spring.boot.app.service.NLUService;
 
 @Component
 public class NLU {
 
-	private NLUForm nluForm = new NLUForm();
+	private NLUBean nluForm = new NLUBean();
 
-	public void setNLUForm(ArticleForm articleForm, NLUForm onlyResults) {
+	public void setNLUForm(ArticleBean articleForm, NLUBean onlyPythonResults) {
 		String language = "ja";
 
 		KeywordsOptions keywords = new KeywordsOptions.Builder().build();
@@ -65,9 +65,9 @@ public class NLU {
 		
 		//Pythonの解析結果とNLUの解析結果を結合
 		//Pythonの解析結果がnullでない場合
-		if(onlyResults != null) {
+		if(onlyPythonResults != null) {
 			//最終的にsetするresultsのリスト
-			List<String> combinedResults = onlyResults.getResults();
+			List<String> combinedResults = onlyPythonResults.getResults();
 			//Entities
 			List<EntitiesResult> entitiesList = nluForm.getEntities();
 			for(Object obj : entitiesList) {
@@ -85,12 +85,16 @@ public class NLU {
 			nluForm.setResults(notSet);
 		}
 	}
-	public NLUForm getNLUForm() {
+	public NLUBean getNLUForm() {
 		return nluForm;
 	}
 	
 	public List<ConceptsResult> getConceptsResults(){
 		return nluForm.getConcepts();
+	}
+
+	public List<EntitiesResult> getEntitiesResult(){
+		return nluForm.getEntities();
 	}
 	
 	public void insertAnalysisResults(NLUService nluService) throws Exception{
