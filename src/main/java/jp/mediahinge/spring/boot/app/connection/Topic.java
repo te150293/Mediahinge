@@ -89,6 +89,7 @@ public class Topic {
 		topicForm.setTags(tags);
 		
 		topicService.persist(topicForm);
+		ScheduledMethods.incrementTopic_id();
 		System.out.println("Successfully created Topic!\n");
 	}
 

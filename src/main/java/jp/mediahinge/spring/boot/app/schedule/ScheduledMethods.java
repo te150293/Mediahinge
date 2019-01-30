@@ -62,12 +62,12 @@ public class ScheduledMethods {
 	private static int articleCounter = 76;
 	private static int rssCounter = 95;
 
-	private static int topic_id = 1;
+	private static int topic_id = 52;
 
 //		@Scheduled(cron = "0 0 * * * *")
-		@Scheduled(cron = "0 * * * * *")
-		@Scheduled(cron = "20 * * * * *")
-		@Scheduled(cron = "40 * * * * *")
+//		@Scheduled(cron = "0 * * * * *")
+//		@Scheduled(cron = "20 * * * * *")
+//		@Scheduled(cron = "40 * * * * *")
 	public void insertData() throws Exception{
 
 		RSS rss = new RSS();
