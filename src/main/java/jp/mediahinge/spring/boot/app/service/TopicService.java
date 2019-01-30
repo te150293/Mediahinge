@@ -82,5 +82,35 @@ public class TopicService extends CloudantService{
 			return null;
 		}
 	}
+	
+	public List<TopicBean> searchByTag(String tag){
+		String selector = 
+				"{\r\n" + 
+				"   \"selector\": {\r\n" + 
+				"      \"tags\": {\r\n" + 
+				"         \"$elemMatch\": {\r\n" + 
+				"            \"$eq\": \"" + tag +  "\"\r\n" + 
+				"         }\r\n" + 
+				"      }\r\n" + 
+				"   },\r\n" + 
+				"   \"fields\": [\r\n" + 
+				"      \"_id\",\r\n" + 
+				"      \"_rev\",\r\n" + 
+				"      \"topic_id\",\r\n" + 
+				"      \"article_list\",\r\n" + 
+				"      \"tags\"\r\n" + 
+				"   ],\r\n" + 
+				"   \"sort\": [\r\n" + 
+				"      {\r\n" + 
+				"         \"topic_id\": \"desc\"\r\n" + 
+				"      }\r\n" + 
+				"   ],\r\n" + 
+				"   \"limit\": 100\r\n" + 
+				"}";
+
+		QueryResult queryResult = getDB().query(selector, TopicBean.class);
+		List<TopicBean> topicList = queryResult.getDocs();
+		return topicList;
+	}
 
 }

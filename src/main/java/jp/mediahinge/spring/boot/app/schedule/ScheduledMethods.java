@@ -59,12 +59,12 @@ public class ScheduledMethods {
 
 	private List<NLUBean> nluFormList = new ArrayList<>();
 
-	private static int articleCounter = 76;
-	private static int rssCounter = 95;
+	private static int articleCounter = 83;
+	private static int rssCounter = 129;
 
-	private static int topic_id = 52;
+	private static int topic_id = 55;
 
-//		@Scheduled(cron = "0 0 * * * *")
+		@Scheduled(cron = "0 0 * * * *")
 //		@Scheduled(cron = "0 * * * * *")
 //		@Scheduled(cron = "20 * * * * *")
 //		@Scheduled(cron = "40 * * * * *")
@@ -93,7 +93,7 @@ public class ScheduledMethods {
 				HttpURLConnection httpURLConnection = null;
 				NLUBean resultsFromPython = null;
 				
-				//Python接続処理
+				//Python接続処理(別ファイル)
 
 				NLU nlu = new NLU();
 				nlu.setNLUForm(tempArticleForm,resultsFromPython);
@@ -201,132 +201,122 @@ public class ScheduledMethods {
 //	@Scheduled(initialDelay = 6000, fixedRate = 500000)
 	public void test() throws Exception{
 
-		Calendar calendar = Calendar.getInstance();
-		Date today = new Date();
-		calendar.setTime(today);
-		calendar.add(Calendar.DATE, -2);
-		Date yes_yesterday = calendar.getTime();
-		SimpleDateFormat id_format = new SimpleDateFormat("yyyyMMdd");
-		String yes_yesterday_topic = id_format.format(yes_yesterday) + "00";
-		
-		System.out.println(Integer.parseInt(yes_yesterday_topic));
-//
-//		String urlString = "https://mhanalysispython.mybluemix.net/";
-//		HttpURLConnection httpURLConnection = null;
-//
-//		List<RSSForm> rssList = new ArrayList<>();
-//		RSSForm testRSS = new RSSForm();
-//		testRSS.setUrl("https://www.yomiuri.co.jp/politics/20190124-OYT1T50118.html");
-//		rssList.add(testRSS);
-//		testRSS = new RSSForm();
-//		testRSS.setUrl("https://www.asahi.com/articles/ASM1T3PGTM1TUTFK008.html");
-//		rssList.add(testRSS);
-//		testRSS = new RSSForm();
-//		testRSS.setUrl("https://mainichi.jp/articles/20190125/k00/00m/010/114000c");
-//		rssList.add(testRSS);
-//
-//		NLUForm resultsFromPython = null;
-//		try {
-//			for(int i = 0; i < 3; i++) {
-//				httpURLConnection = Analyzer.connectAnalyzer(httpURLConnection, urlString);
-//
-//				//コネクションを開く
-//				httpURLConnection.connect();
-//
-//				RSSForm rss = rssList.get(i);
-//
-//				//POSTするJSONオブジェクト
-//				JSONObject json = new JSONObject();
-//				json.put("url",rss.getUrl());
-//
-//				//リクエストボディの書き出しを行う
-//				OutputStream outputStream = httpURLConnection.getOutputStream();//OutputStreamを取得
-//				Analyzer.postJson(outputStream, json);
-//				Thread.sleep(5000);
-//
-//				//ResponseBody の読み出しを行う
-//				StringBuffer stringBuffer = Analyzer.getResponceBody(httpURLConnection);
-//
-//				Gson gson = new Gson();
-//				resultsFromPython = gson.fromJson(stringBuffer.toString(), NLUForm.class);
-//
-//				System.out.println(resultsFromPython + "\n");
-//
-//				httpURLConnection.disconnect();
-//				httpURLConnection = null;
-//
-//				httpURLConnection = Analyzer.connectAnalyzer(httpURLConnection, urlString);
-//
-//				//コネクションを開く
-//				httpURLConnection.connect();
-//
-//				//POSTするJSONオブジェクト
-//				json = new JSONObject();
-//				json.put("_id","A2000/01/01/00" + i);
-//				json.put("distribution_date","2000/01/01");
-//				if(i == 0) {
-//					json.put("media","yomiuri");
-//				} else if(i == 1){
-//					json.put("media","asahi");
-//				} else {
-//					json.put("media","mainichi");
-//				}
-//				json.put("results",resultsFromPython.getResults());
-//
-//				//リクエストボディの書き出しを行う
-//				outputStream = null;
-//				outputStream = httpURLConnection.getOutputStream();//OutputStreamを取得
-//				System.out.println(json + "\n");
-//				Analyzer.postJson(outputStream, json);
-//				Thread.sleep(5000);
-//
-//				System.out.println(httpURLConnection.getResponseCode() + "\n");
-//
-//				//ResponseBody の読み出しを行う
-//				stringBuffer = Analyzer.getResponceBody(httpURLConnection);
-//				System.out.println(stringBuffer.toString() + "\n");
-//
-//				resultsFromPython = null;
-//				httpURLConnection.disconnect();
-//				httpURLConnection = null;
-//			}
-//			httpURLConnection = Analyzer.connectAnalyzer(httpURLConnection, urlString);
-//
-//			//コネクションを開く
-//			httpURLConnection.connect();
-//
-//			//POSTするJSONオブジェクト
-//			JSONObject json = new JSONObject();
-//			json.put("_id","A2000/01/01/000");
-//
-//			//リクエストボディの書き出しを行う
-//			OutputStream outputStream = null;
-//			outputStream = httpURLConnection.getOutputStream();//OutputStreamを取得
-//			Analyzer.postJson(outputStream, json);
-//			Thread.sleep(5000);
-//
-//			System.out.println(httpURLConnection.getResponseCode() + "\n");
-//
-//			//			ResponseBody の読み出しを行う
-//			StringBuffer stringBuffer = Analyzer.getResponceBody(httpURLConnection);
-//			System.out.println(stringBuffer.toString() + "\n");
-//			Gson gson = new Gson();
-//			RateForm rateForm = gson.fromJson(stringBuffer.toString(), RateForm.class);
-//			System.out.println(rateForm + "\n");
-//
-//			resultsFromPython = null;
-//			httpURLConnection.disconnect();
-//
-//		} catch (MalformedURLException e) {
-//			System.err.println("Invalid URL format: " + urlString);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		} finally {
-//			if (httpURLConnection != null) {
-//				//コネクションを閉じる。
-//				httpURLConnection.disconnect();
-//			}
-//		}
+		String urlString = "https://mhanalysispython.mybluemix.net/";
+		HttpURLConnection httpURLConnection = null;
+
+		List<RSSBean> rssList = new ArrayList<>();
+		RSSBean testRSS = new RSSBean();
+		testRSS.setUrl("https://www.yomiuri.co.jp/politics/20190124-OYT1T50118.html");
+		rssList.add(testRSS);
+		testRSS = new RSSBean();
+		testRSS.setUrl("https://www.asahi.com/articles/ASM1T3PGTM1TUTFK008.html");
+		rssList.add(testRSS);
+		testRSS = new RSSBean();
+		testRSS.setUrl("https://mainichi.jp/articles/20190125/k00/00m/010/114000c");
+		rssList.add(testRSS);
+
+		NLUBean resultsFromPython = null;
+		try {
+			for(int i = 0; i < 3; i++) {
+				httpURLConnection = Analyzer.connectAnalyzer(httpURLConnection, urlString);
+
+				//コネクションを開く
+				httpURLConnection.connect();
+
+				RSSBean rss = rssList.get(i);
+
+				//POSTするJSONオブジェクト
+				JSONObject json = new JSONObject();
+				json.put("url",rss.getUrl());
+
+				//リクエストボディの書き出しを行う
+				OutputStream outputStream = httpURLConnection.getOutputStream();//OutputStreamを取得
+				Analyzer.postJson(outputStream, json);
+				Thread.sleep(5000);
+
+				//ResponseBody の読み出しを行う
+				StringBuffer stringBuffer = Analyzer.getResponceBody(httpURLConnection);
+
+				Gson gson = new Gson();
+				resultsFromPython = gson.fromJson(stringBuffer.toString(), NLUBean.class);
+
+				System.out.println(resultsFromPython + "\n");
+
+				httpURLConnection.disconnect();
+				httpURLConnection = null;
+
+				httpURLConnection = Analyzer.connectAnalyzer(httpURLConnection, urlString);
+
+				//コネクションを開く
+				httpURLConnection.connect();
+
+				//POSTするJSONオブジェクト
+				json = new JSONObject();
+				json.put("_id","A2000/01/01/00" + i);
+				json.put("distribution_date","2000/01/01");
+				if(i == 0) {
+					json.put("media","yomiuri");
+				} else if(i == 1){
+					json.put("media","asahi");
+				} else {
+					json.put("media","mainichi");
+				}
+				json.put("results",resultsFromPython.getResults());
+
+				//リクエストボディの書き出しを行う
+				outputStream = null;
+				outputStream = httpURLConnection.getOutputStream();//OutputStreamを取得
+				System.out.println(json + "\n");
+				Analyzer.postJson(outputStream, json);
+				Thread.sleep(5000);
+
+				System.out.println(httpURLConnection.getResponseCode() + "\n");
+
+				//ResponseBody の読み出しを行う
+				stringBuffer = Analyzer.getResponceBody(httpURLConnection);
+				System.out.println(stringBuffer.toString() + "\n");
+
+				resultsFromPython = null;
+				httpURLConnection.disconnect();
+				httpURLConnection = null;
+			}
+			httpURLConnection = Analyzer.connectAnalyzer(httpURLConnection, urlString);
+
+			//コネクションを開く
+			httpURLConnection.connect();
+
+			//POSTするJSONオブジェクト
+			JSONObject json = new JSONObject();
+			json.put("_id","A2000/01/01/000");
+
+			//リクエストボディの書き出しを行う
+			OutputStream outputStream = null;
+			outputStream = httpURLConnection.getOutputStream();//OutputStreamを取得
+			Analyzer.postJson(outputStream, json);
+			Thread.sleep(5000);
+
+			System.out.println(httpURLConnection.getResponseCode() + "\n");
+
+			//			ResponseBody の読み出しを行う
+			StringBuffer stringBuffer = Analyzer.getResponceBody(httpURLConnection);
+			System.out.println(stringBuffer.toString() + "\n");
+			Gson gson = new Gson();
+			RateForm rateForm = gson.fromJson(stringBuffer.toString(), RateForm.class);
+			System.out.println(rateForm + "\n");
+
+			resultsFromPython = null;
+			httpURLConnection.disconnect();
+
+		} catch (MalformedURLException e) {
+			System.err.println("Invalid URL format: " + urlString);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (httpURLConnection != null) {
+				//コネクションを閉じる。
+				httpURLConnection.disconnect();
+			}
+		}
 	}
 
 //	@Scheduled(cron = "0 20 * * * *")
