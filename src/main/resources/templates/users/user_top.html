@@ -47,6 +47,8 @@
 		</div>
 	</header>
 	<div class="contents">
+		<h3 class="container-fluid offset-md-2 col-md-8 offset-md-2 heading" th:text="${tag} != null ? 'タグ:' + ${tag} + ' のトピック一覧'">
+		</h3>
 		<div class="container-fluid content" th:each="topic : ${topics}">
 			<div class="row p-5">
 				<div class="offset-md-2 col-md-8 offset-md-2">
