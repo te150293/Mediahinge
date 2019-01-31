@@ -98,6 +98,7 @@ public class MainController {
 //			System.out.println(obj);
 //		}
 		model.addAttribute("topics",topicFormList);
+		model.addAttribute("tag", null);
 		
 		return "users/user_top";
 	}
@@ -133,6 +134,7 @@ public class MainController {
 			}
 		}
 		model.addAttribute("topics",topicFormList);
+		model.addAttribute("tag", tag);
 
 		return "users/user_top";
 	}
