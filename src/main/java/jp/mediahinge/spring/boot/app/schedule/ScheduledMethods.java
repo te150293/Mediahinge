@@ -59,11 +59,9 @@ public class ScheduledMethods {
 
 	private List<NLUBean> nluFormList = new ArrayList<>();
 
-	private static int articleCounter = 111;
-	private static int rssCounter = 227;
-	
-
-	private static int topic_id = 68;
+	private static int articleCounter = 10;
+	private static int rssCounter = 42;
+	private static int topic_id = 2;
 
 		@Scheduled(cron = "0 0 * * * *")
 //		@Scheduled(cron = "0 * * * * *")
