@@ -59,7 +59,7 @@ public class TopicService extends CloudantService{
 		fields.add("article_list");
 		fields.add("tags");
 		
-		String selector = Selector.buildSelector("topic", "topic_id", "gte", yes_yesterday, fields, "topic_id", "desc");
+		String selector = new Selector().buildSelector("topic", "topic_id", "gte", yes_yesterday, fields, "topic_id", "desc");
 
 		System.out.println(selector);
 		QueryResult queryResult = getDB().query(selector, TopicBean.class);
@@ -72,7 +72,7 @@ public class TopicService extends CloudantService{
 		fields.add("topic_id");
 		fields.add("article_list");
 		fields.add("tags");
-		String selector = Selector.buildSelector("topic", "topic_id", "eq", topic_id, fields);
+		String selector = new Selector().buildSelector("topic", "topic_id", "eq", topic_id, fields);
 
 		QueryResult queryResult = getDB().query(selector, TopicBean.class);
 		List<TopicBean> topicList = queryResult.getDocs();
