@@ -61,6 +61,7 @@ public class ScheduledMethods {
 
 	private static int articleCounter = 111;
 	private static int rssCounter = 227;
+	
 
 	private static int topic_id = 68;
 
