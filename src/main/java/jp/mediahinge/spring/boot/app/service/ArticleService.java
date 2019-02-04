@@ -134,14 +134,4 @@ public class ArticleService extends CloudantService{
 		List<ArticleBean> results = queryResult.getDocs();
 		return results;
 	}
-	
-	public List<ArticleBean> runQuery(String selector){
-		System.out.println("DEBUG:" + getDB().query(selector, ArticleBean.class));
-		QueryResult queryResult = getDB().query(selector, ArticleBean.class);
-		System.out.println("DEBUG:" + queryResult.getDocs());
-		//resultsは検索結果
-		List<ArticleBean> results = queryResult.getDocs();
-		return results;
-		
-	}
 }
