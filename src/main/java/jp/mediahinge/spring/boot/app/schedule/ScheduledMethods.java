@@ -482,6 +482,7 @@ public class ScheduledMethods {
 		for(int i = 0; i < 10; i++) {
 			topicService.getRecentTopics(2019020200);
 			Thread.sleep(200);
+			System.out.println("debug_ok:" + i);
 		}
 	}
 }
