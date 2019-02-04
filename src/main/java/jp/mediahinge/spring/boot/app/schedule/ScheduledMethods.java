@@ -65,7 +65,7 @@ public class ScheduledMethods {
 
 	private static int topic_id = 68;
 
-//		@Scheduled(cron = "0 0 * * * *")
+		@Scheduled(cron = "0 0 * * * *")
 //		@Scheduled(cron = "0 * * * * *")
 //		@Scheduled(cron = "20 * * * * *")
 //		@Scheduled(cron = "40 * * * * *")
@@ -473,16 +473,6 @@ public class ScheduledMethods {
 //				articleService.updateTopics_id(articleForm1.get_id(), articleForm1);
 //				Thread.sleep(400);
 //			}
-		}
-	}
-
-//	@Scheduled(initialDelay = 6000, fixedRate = 500000)
-	@Scheduled(cron = "0 * * * * *")
-	public void test02() throws Exception{
-		for(int i = 0; i < 10; i++) {
-			topicService.getRecentTopics(2019020200);
-			Thread.sleep(200);
-			System.out.println("debug_ok:" + i);
 		}
 	}
 }
