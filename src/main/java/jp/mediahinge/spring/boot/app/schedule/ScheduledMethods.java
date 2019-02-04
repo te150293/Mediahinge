@@ -409,34 +409,44 @@ public class ScheduledMethods {
 				httpURLConnection.disconnect();
 			}
 
-			if(rateForm != null) {
+// 			if(rateForm != null) {
 
-				//一致率によってグループ化するか判定する処理を記述する
+// 				//一致率によってグループ化するか判定する処理を記述する
 
-				ArticleBean articleForm1 = articleService.get(rateForm.get_id1());
-				Thread.sleep(400);
-				if(articleForm1.getHighest_rate() <= rateForm.getRate1()) {
-					articleForm0.setHighest_rate(rateForm.getRate1());
-					articleForm1.setHighest_rate(rateForm.getRate1());
-					articleForm0.setTopics_id(topic_id);
-					articleForm1.setTopics_id(topic_id);
-				}
-				ArticleBean articleForm2 = articleService.get(rateForm.get_id2());
-				Thread.sleep(400);
-				if(articleForm2.getHighest_rate() <= rateForm.getRate2()) {
-					articleForm0.setHighest_rate(rateForm.getRate2());
-					articleForm2.setHighest_rate(rateForm.getRate2());
-					articleForm0.setTopics_id(topic_id);
-					articleForm2.setTopics_id(topic_id);
-				}
+// 				ArticleBean articleForm1 = articleService.get(rateForm.get_id1());
+// 				Thread.sleep(400);
+// 				if(articleForm1.getHighest_rate() <= rateForm.getRate1()) {
+// 					articleForm0.setHighest_rate(rateForm.getRate1());
+// 					articleForm1.setHighest_rate(rateForm.getRate1());
+// 					articleForm0.setTopics_id(topic_id);
+// 					articleForm1.setTopics_id(topic_id);
+// 				}
+// 				ArticleBean articleForm2 = articleService.get(rateForm.get_id2());
+// 				Thread.sleep(400);
+// 				if(articleForm2.getHighest_rate() <= rateForm.getRate2()) {
+// 					articleForm0.setHighest_rate(rateForm.getRate2());
+// 					articleForm2.setHighest_rate(rateForm.getRate2());
+// 					articleForm0.setTopics_id(topic_id);
+// 					articleForm2.setTopics_id(topic_id);
+// 				}
 
-				articleService.updateTopics_id(articleForm0.get_id(), articleForm0);
-				Thread.sleep(400);
-				articleService.updateTopics_id(articleForm1.get_id(), articleForm1);
-				Thread.sleep(400);
-				articleService.updateTopics_id(articleForm1.get_id(), articleForm1);
-				Thread.sleep(400);
-			}
+// 				articleService.updateTopics_id(articleForm0.get_id(), articleForm0);
+// 				Thread.sleep(400);
+// 				articleService.updateTopics_id(articleForm1.get_id(), articleForm1);
+// 				Thread.sleep(400);
+// 				articleService.updateTopics_id(articleForm1.get_id(), articleForm1);
+// 				Thread.sleep(400);
+// 			}
+		}
+	}
+  
+//	@Scheduled(initialDelay = 6000, fixedRate = 500000)
+	@Scheduled(cron = "0 * * * * *")
+	public void test02() throws Exception{
+		for(int i = 0; i < 10; i++) {
+			topicService.getRecentTopics(2019020200);
+			Thread.sleep(200);
+			System.out.println("debug_ok:" + i);
 		}
 	}
 }
