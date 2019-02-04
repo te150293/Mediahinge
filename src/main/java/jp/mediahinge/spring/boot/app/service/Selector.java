@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Selector {
 	
-	public static String buildSelector(String type, String key, String operator, String value, List<String> fields) {
+	public String buildSelector(String type, String key, String operator, String value, List<String> fields) {
 		String selector = 
 				"{\r\n" + 
 				"   \"selector\": {\r\n" + 
@@ -23,10 +23,12 @@ public class Selector {
 				"      \"_id\",\r\n" + 
 				"      \"_rev\"";
 
-		for(Object obj : fields) {
-			String field = (String) obj;
-			selector += ",\r\n "
-					+ "      \"" + field + "\"";
+		if(fields != null) {
+			for(Object obj : fields) {
+				String field = (String) obj;
+				selector += ",\r\n "
+						+ "      \"" + field + "\"";
+			}	
 		}
 		
 		selector += "\r\n "
@@ -36,7 +38,7 @@ public class Selector {
 		return selector;
 	}
 
-	public static String buildSelector(String type, String key, String operator, int value, List<String> fields) {
+	public String buildSelector(String type, String key, String operator, int value, List<String> fields) {
 		String selector = 
 				"{\r\n" + 
 				"   \"selector\": {\r\n" + 
@@ -55,10 +57,12 @@ public class Selector {
 				"      \"_id\",\r\n" + 
 				"      \"_rev\"";
 		
-		for(Object obj : fields) {
-			String field = (String) obj;
-			selector += ",\r\n "
-					+ "      \"" + field + "\"";
+		if(fields != null) {
+			for(Object obj : fields) {
+				String field = (String) obj;
+				selector += ",\r\n "
+						+ "      \"" + field + "\"";
+			}
 		}
 		
 		selector += "\r\n "
@@ -68,7 +72,7 @@ public class Selector {
 		return selector;
 	}
 
-	public static String buildSelector(String type, String key, String operator, int value, List<String> fields, String sort, String order) {
+	public String buildSelector(String type, String key, String operator, int value, List<String> fields, String sort, String order) {
 		String selector = 
 				"{\r\n" + 
 				"   \"selector\": {\r\n" + 
@@ -87,10 +91,12 @@ public class Selector {
 				"      \"_id\",\r\n" + 
 				"      \"_rev\"";
 		
-		for(Object obj : fields) {
-			String field = (String) obj;
-			selector += ",\r\n "
-					+ "      \"" + field + "\"";
+		if(fields != null) {
+			for(Object obj : fields) {
+				String field = (String) obj;
+				selector += ",\r\n "
+						+ "      \"" + field + "\"";
+			}
 		}
 		
 		selector += 
@@ -105,6 +111,23 @@ public class Selector {
 				"      }\r\n" +
 				"   ],\r\n" +
 				"   \"limit\": 200\r\n" +
+				"}";
+		
+		return selector;
+	}
+	
+	public String buildTextSelector(String text) {
+		String selector = 
+				"{\r\n" + 
+				"   \"selector\": {\r\n" + 
+				"      \"$text\": \"" + text +  "\"\r\n" + 
+				"   },\r\n" + 
+				"   \"fields\": [\r\n" + 
+				"      \"_id\",\r\n" + 
+				"      \"_rev\",\r\n" + 
+				"      \"text\"\r\n" + 
+				"   ],\r\n" + 
+				"   \"limit\": 100\r\n" + 
 				"}";
 		
 		return selector;

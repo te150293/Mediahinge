@@ -64,7 +64,7 @@ public class ScheduledMethods {
 
 	private static int topic_id = 68;
 
-		@Scheduled(cron = "0 0 * * * *")
+//		@Scheduled(cron = "0 0 * * * *")
 //		@Scheduled(cron = "0 * * * * *")
 //		@Scheduled(cron = "20 * * * * *")
 //		@Scheduled(cron = "40 * * * * *")
@@ -93,7 +93,42 @@ public class ScheduledMethods {
 				HttpURLConnection httpURLConnection = null;
 				NLUBean resultsFromPython = null;
 				
-				//Python接続処理(別ファイル)
+				/**
+				 * //Python接続処理(別ファイル)
+				 */
+				try {
+					httpURLConnection = Analyzer.connectAnalyzer(httpURLConnection, urlString);
+
+					//コネクションを開く
+					httpURLConnection.connect();
+
+					//リクエストボディの書き出しを行う
+					OutputStream outputStream = httpURLConnection.getOutputStream();//OutputStreamを取得
+
+					//POSTするJSONオブジェクト
+					JSONObject json = new JSONObject();
+					json.put("url",rssForm.getUrl());
+
+					Analyzer.postJson(outputStream, json);
+					Thread.sleep(5000);
+
+					//ResponseBody の読み出しを行う
+					StringBuffer stringBuffer = Analyzer.getResponceBody(httpURLConnection);
+
+					System.out.println(stringBuffer.toString());
+					Gson gson = new Gson();
+					resultsFromPython = gson.fromJson(stringBuffer.toString(), NLUBean.class);
+
+				} catch (MalformedURLException e) {
+					System.err.println("Invalid URL format: " + urlString);
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					if (httpURLConnection != null) {
+						//コネクションを閉じる。
+						httpURLConnection.disconnect();
+					}
+				}
 
 				NLU nlu = new NLU();
 				nlu.setNLUForm(tempArticleForm,resultsFromPython);
@@ -192,6 +227,7 @@ public class ScheduledMethods {
 	public static void incrementTopic_id() {
 		topic_id = topic_id + 1;
 	}
+	
 	//	@Scheduled(cron = "0 * * * * *")
 	//	@Scheduled(cron = "10 * * * * *")
 	//	@Scheduled(cron = "20 * * * * *")
@@ -319,10 +355,10 @@ public class ScheduledMethods {
 		}
 	}
 
-//	@Scheduled(cron = "0 20 * * * *")
+	@Scheduled(cron = "0 20 * * * *")
 	public void registrationRequest() throws Exception{
 		for(Object obj : nluFormList) {
-			NLUBean nluForm = (NLUBean) obj;
+			NLUBean nluBean = (NLUBean) obj;
 
 			String urlString = "https://mhanalysispython.mybluemix.net/";
 			HttpURLConnection httpURLConnection = null;
@@ -335,9 +371,9 @@ public class ScheduledMethods {
 				//リクエストボディの書き出しを行う
 				OutputStream outputStream = httpURLConnection.getOutputStream();//OutputStreamを取得
 
-				String id = nluForm.getArticle_id();
-				String distribution_date = nluForm.getArticle_id().substring(1, 11);
-				List<String> results = nluForm.getResults();
+				String id = nluBean.getArticle_id();
+				String distribution_date = nluBean.getArticle_id().substring(1, 11);
+				List<String> results = nluBean.getResults();
 
 				JSONObject json = new JSONObject();//POSTするJSONオブジェクト
 				json.put("_id",id);
@@ -361,7 +397,7 @@ public class ScheduledMethods {
 		nluFormList = new ArrayList<>();
 	}
 
-//	@Scheduled(cron = "0 30 * * * *")
+	@Scheduled(cron = "0 30 * * * *")
 	public void requireRate() throws Exception{
 		List<ArticleBean> notGroupedArticleList = articleService.getNotGroupedArticle();
 
@@ -408,36 +444,43 @@ public class ScheduledMethods {
 				httpURLConnection.disconnect();
 			}
 
-			if(rateForm != null) {
+//			if(rateForm != null) {
+//
+//				//一致率によってグループ化するか判定する処理を記述する
+//
+//				ArticleBean articleForm1 = articleService.get(rateForm.get_id1());
+//				Thread.sleep(400);
+//				if(articleForm1.getHighest_rate() <= rateForm.getRate1()) {
+//					articleForm0.setHighest_rate(rateForm.getRate1());
+//					articleForm1.setHighest_rate(rateForm.getRate1());
+//					articleForm0.setTopics_id(topic_id);
+//					articleForm1.setTopics_id(topic_id);
+//				}
+//				ArticleBean articleForm2 = articleService.get(rateForm.get_id2());
+//				Thread.sleep(400);
+//				if(articleForm2.getHighest_rate() <= rateForm.getRate2()) {
+//					articleForm0.setHighest_rate(rateForm.getRate2());
+//					articleForm2.setHighest_rate(rateForm.getRate2());
+//					articleForm0.setTopics_id(topic_id);
+//					articleForm2.setTopics_id(topic_id);
+//				}
+//
+//				articleService.updateTopics_id(articleForm0.get_id(), articleForm0);
+//				Thread.sleep(400);
+//				articleService.updateTopics_id(articleForm1.get_id(), articleForm1);
+//				Thread.sleep(400);
+//				articleService.updateTopics_id(articleForm1.get_id(), articleForm1);
+//				Thread.sleep(400);
+//			}
+		}
+	}
 
-				//一致率によってグループ化するか判定する処理を記述する
-
-				ArticleBean articleForm1 = articleService.get(rateForm.get_id1());
-				Thread.sleep(400);
-				if(articleForm1.getHighest_rate() <= rateForm.getRate1()) {
-					articleForm0.setHighest_rate(rateForm.getRate1());
-					articleForm1.setHighest_rate(rateForm.getRate1());
-					articleForm0.setTopics_id(topic_id);
-					articleForm1.setTopics_id(topic_id);
-				}
-				ArticleBean articleForm2 = articleService.get(rateForm.get_id2());
-				Thread.sleep(400);
-				if(articleForm2.getHighest_rate() <= rateForm.getRate2()) {
-					articleForm0.setHighest_rate(rateForm.getRate2());
-					articleForm2.setHighest_rate(rateForm.getRate2());
-					articleForm0.setTopics_id(topic_id);
-					articleForm2.setTopics_id(topic_id);
-				}
-
-				articleService.updateTopics_id(articleForm0.get_id(), articleForm0);
-				Thread.sleep(400);
-				articleService.updateTopics_id(articleForm1.get_id(), articleForm1);
-				Thread.sleep(400);
-				articleService.updateTopics_id(articleForm1.get_id(), articleForm1);
-				Thread.sleep(400);
-			}
+//	@Scheduled(initialDelay = 6000, fixedRate = 500000)
+	@Scheduled(cron = "0 * * * * *")
+	public void test02() throws Exception{
+		for(int i = 0; i < 10; i++) {
+			topicService.getRecentTopics(2019020200);
+			Thread.sleep(200);
 		}
 	}
 }
-
-
