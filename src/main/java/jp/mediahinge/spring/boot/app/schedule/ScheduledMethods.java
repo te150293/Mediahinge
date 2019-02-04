@@ -47,23 +47,19 @@ public class ScheduledMethods {
 
 	@Autowired
 	private NLUService nluService;
-
 	@Autowired
 	private RSSService rssService;
-
 	@Autowired
 	private ArticleService articleService;
-
 	@Autowired
 	private TopicService topicService;
-
 	private List<NLUBean> nluFormList = new ArrayList<>();
 
-	private static int articleCounter = 10;
 	private static int rssCounter = 42;
-	private static int topic_id = 2;
+	private static int articleCounter = 10;
+	private static int topic_id = 4;
 
-		@Scheduled(cron = "0 0 * * * *")
+		@Scheduled(cron = "2 0 * * * *")
 //		@Scheduled(cron = "0 * * * * *")
 //		@Scheduled(cron = "20 * * * * *")
 //		@Scheduled(cron = "40 * * * * *")
