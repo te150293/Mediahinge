@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jp.mediahinge.spring.boot.app.bean.ArticleBean;
@@ -22,7 +21,6 @@ import jp.mediahinge.spring.boot.app.form.TopicForm;
 import jp.mediahinge.spring.boot.app.processing.Topics;
 import jp.mediahinge.spring.boot.app.service.ArticleService;
 import jp.mediahinge.spring.boot.app.service.NLUService;
-import jp.mediahinge.spring.boot.app.service.Selector;
 import jp.mediahinge.spring.boot.app.service.TopicService;
 
 @Controller
@@ -108,18 +106,7 @@ public class MainController {
 
 	@GetMapping(path = "search")
 	public String search(Model model, @RequestParam("tag") String tag) {
-
-		String str = tag;
-		
-		if(str != null) {
-			str = str.replace("&", "&amp;");
-			str = str.replace("\"", "&quot;");
-			str = str.replace("<", "&lt;");
-			str = str.replace(">", "&gt;");
-			str = str.replace("'", "&#39;");
-		}
-		
-		List<TopicBean> resultTopicsBean = topicService.searchByTag(str);
+		List<TopicBean> resultTopicsBean = topicService.searchByTag(tag);
 
 		List<TopicForm> topicFormList = new ArrayList<>();
 		for(Object obj1 : resultTopicsBean) {
@@ -149,31 +136,6 @@ public class MainController {
 		model.addAttribute("topics",topicFormList);
 		model.addAttribute("tag", tag);
 
-		return "users/user_top";
-	}
-	
-	@PostMapping(path = "search")
-	public String searchText(Model model, @RequestParam("search") String search) {
-		String text = null;
-		if(search != null) {
-			text = search;
-			
-			text = text.replace("&", "&amp;");
-			text = text.replace("\"", "&quot;");
-			text = text.replace("<", "&lt;");
-			text = text.replace(">", "&gt;");
-			text = text.replace("'", "&#39;");
-		}
-
-		String selector = new Selector().buildTextSelector(text);
-		List<ArticleBean> articles = articleService.runQuery(selector);
-		if(articles != null) {
-			for(Object obj : articles) {
-				ArticleBean articleBean = (ArticleBean)obj;
-				
-			}
-		}
-		
 		return "users/user_top";
 	}
 
