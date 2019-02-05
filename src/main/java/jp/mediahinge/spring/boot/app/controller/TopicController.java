@@ -91,7 +91,7 @@ public class TopicController {
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value="/", params = {"page"})
-	public String top(Model model, @RequestParam("page") int page) {
+	public String top(Model model, @RequestParam("page") int page) throws InterruptedException {
 		int skip;
 		if(page == 0) {
 			skip = 1;
@@ -114,6 +114,7 @@ public class TopicController {
 				for(Object obj2 : topicBean.getArticle_list()) {
 					Score score = (Score)obj2;
 					ArticleBean articleBean = articleService.get(score.getArticle_id());
+					Thread.sleep(200);
 					ArticleForm articleForm = new ArticleForm();
 					articleForm.set_id(articleBean.get_id());
 					articleForm.setMedia(articleBean.getMedia());
@@ -142,7 +143,7 @@ public class TopicController {
 	}
 	
 	@GetMapping(path = "search")
-	public String search(Model model, @RequestParam("tag") String tag , @RequestParam("page") int page) {
+	public String search(Model model, @RequestParam("tag") String tag , @RequestParam("page") int page) throws InterruptedException {
 		String str = tag;
 		if(str != null) {
 			str = str.replace("&", "&amp;");
@@ -166,6 +167,7 @@ public class TopicController {
 				for(Object obj2 : topicBean.getArticle_list()) {
 					Score score = (Score)obj2;
 					ArticleBean articleBean = articleService.get(score.getArticle_id());
+					Thread.sleep(200);
 					ArticleForm articleForm = new ArticleForm();
 					articleForm.set_id(articleBean.get_id());
 					articleForm.setMedia(articleBean.getMedia());
