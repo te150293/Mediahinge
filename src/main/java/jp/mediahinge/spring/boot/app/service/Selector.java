@@ -23,10 +23,12 @@ public class Selector {
 				"      \"_id\",\r\n" + 
 				"      \"_rev\"";
 
-		for(Object obj : fields) {
-			String field = (String) obj;
-			selector += ",\r\n "
-					+ "      \"" + field + "\"";
+		if(fields != null) {
+			for(Object obj : fields) {
+				String field = (String) obj;
+				selector += ",\r\n "
+						+ "      \"" + field + "\"";
+			}
 		}
 		
 		selector += "\r\n "
@@ -54,13 +56,15 @@ public class Selector {
 				"   \"fields\": [\r\n" + 
 				"      \"_id\",\r\n" + 
 				"      \"_rev\"";
-		
-		for(Object obj : fields) {
-			String field = (String) obj;
-			selector += ",\r\n "
-					+ "      \"" + field + "\"";
+
+		if(fields != null) {
+			for(Object obj : fields) {
+				String field = (String) obj;
+				selector += ",\r\n "
+						+ "      \"" + field + "\"";
+			}
 		}
-		
+
 		selector += "\r\n "
 				+ "   ]\r\n"
 				+ "}";
@@ -86,11 +90,13 @@ public class Selector {
 				"   \"fields\": [\r\n" + 
 				"      \"_id\",\r\n" + 
 				"      \"_rev\"";
-		
-		for(Object obj : fields) {
-			String field = (String) obj;
-			selector += ",\r\n "
-					+ "      \"" + field + "\"";
+
+		if(fields != null) {
+			for(Object obj : fields) {
+				String field = (String) obj;
+				selector += ",\r\n "
+						+ "      \"" + field + "\"";
+			}
 		}
 		
 		selector += 
@@ -107,6 +113,23 @@ public class Selector {
 				"   \"limit\": 200\r\n" +
 				"}";
 		
+		return selector;
+	}
+	
+	public String buildTextSelector(String text) {
+		String selector = 
+				"{\r\n" + 
+				"   \"selector\": {\r\n" + 
+				"      \"$text\": \"" + text +  "\"\r\n" + 
+				"   },\r\n" + 
+				"   \"fields\": [\r\n" + 
+				"      \"_id\",\r\n" + 
+				"      \"_rev\",\r\n" + 
+				"      \"text\"\r\n" + 
+				"   ],\r\n" + 
+				"   \"limit\": 100\r\n" + 
+				"}";
+
 		return selector;
 	}
 }

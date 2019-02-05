@@ -30,12 +30,15 @@
 <body>
 	<header class="sticky-top">
 		<div class="header-contents">
-			<h2 id="title">Media hinge</h2>
+			<a href="/">
+				<h2 id="title">Media hinge</h2>
+			</a>
 			<!-- 検索フォーム -->
-			<form id="search_form" action="/" name="search" method="get">
+			<form id="search_form" action="/search" name="tag" method="get">
 				<dl class="search">
 					<dt>
-						<input type="text" name="search" value="" placeholder="Search"/>
+						<input type="text" name="tag" value="" placeholder="Tag search"/>
+						<input type="hidden" name="page" value="1"/>
 					</dt>
 					<dd>
 						<button>
@@ -46,10 +49,9 @@
 			</form>
 		</div>
 	</header>
-	<div class="contents">
-		<h3 class="container-fluid offset-md-2 col-md-8 offset-md-2 heading" th:text="${tag} != null ? 'タグ:' + ${tag} + ' のトピック一覧'">
-		</h3>
-		<div class="container-fluid content" th:each="topic : ${topics}">
+	<div class="container-fluid contents">
+		<h3 class="offset-md-2 col-md-8 offset-md-2 heading" th:text="${tag} != null ? 'タグ:' + ${tag} + ' のトピック一覧'"></h3>
+		<div class="content" th:each="topic : ${topics}">
 			<div class="row p-5">
 				<div class="offset-md-2 col-md-8 offset-md-2">
 					<!-- タブボタン部分 -->
@@ -78,7 +80,7 @@
 						<ul id="tag" class="col-md-10">
 							<span th:each="tag, stat: ${topic.tags}">
 								<img src="../../static/images/tag.png" th:src="@{/images/tag.png}">
-								<a th:href="@{'/search?tag=' + ${tag} + ''}" th:text="${tag}"></a>
+								<a th:href="@{'/search?tag=' + ${tag} + '&page=1'}" th:text="${tag}"></a>
 							</span>
 						</ul>
 						<!-- 
@@ -89,11 +91,18 @@
 					</div>
 				</div>
 			</div>
-			
 			<hr width="80%">
-			
 		</div>
 		
+		<div class="mx-auto" style="width: 200px;" th:with="prev=${page}-1, next=${page}+1">
+				<a th:href="${tag} == null ? '/?page=' + ${prev} : '/search?tag=' + ${tag} + '&page=' + ${prev}" th:text="${prev} > 0 ? '前の10件'"></a>
+				<a th:href="${tag} == null ? '/?page=' + ${next} : '/search?tag=' + ${tag} + '&page=' + ${next}" th:text="${number} == 10 ? '次の10件'"></a>
+		</div>
+		
+		<br>
+		<br>
 	</div>
+	<footer>
+	</footer>
 </body>
 </html>

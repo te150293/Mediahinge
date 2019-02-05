@@ -83,15 +83,31 @@ public class TopicService extends CloudantService{
 		}
 	}
 	
-	public List<TopicBean> searchByTag(String tag){
+	public List<TopicBean> searchByTag(String tag, int skip){
 		String selector = 
 				"{\r\n" + 
 				"   \"selector\": {\r\n" + 
-				"      \"tags\": {\r\n" + 
-				"         \"$elemMatch\": {\r\n" + 
-				"            \"$eq\": \"" + tag +  "\"\r\n" + 
+				"      \"$and\": [\r\n" + 
+				"         {\r\n" + 
+				"            \"article_list\": {\r\n" + 
+				"               \"$or\": [\r\n" + 
+				"                  {\r\n" + 
+				"                     \"$size\": 2\r\n" + 
+				"                  },\r\n" + 
+				"                  {\r\n" + 
+				"                     \"$size\": 3\r\n" + 
+				"                  }\r\n" + 
+				"               ]\r\n" + 
+				"            }\r\n" + 
+				"         },\r\n" + 
+				"         {\r\n" + 
+				"            \"tags\": {\r\n" + 
+				"               \"$elemMatch\": {\r\n" + 
+				"                  \"$eq\": \"" + tag + "\"\r\n" + 
+				"               }\r\n" + 
+				"            }\r\n" + 
 				"         }\r\n" + 
-				"      }\r\n" + 
+				"      ]\r\n" + 
 				"   },\r\n" + 
 				"   \"fields\": [\r\n" + 
 				"      \"_id\",\r\n" + 
@@ -105,6 +121,51 @@ public class TopicService extends CloudantService{
 				"         \"topic_id\": \"desc\"\r\n" + 
 				"      }\r\n" + 
 				"   ],\r\n" + 
+				"   \"limit\": 10,\r\n" + 
+				"   \"skip\": " + skip + "\r\n" + 
+				"}";
+
+		QueryResult queryResult = getDB().query(selector, TopicBean.class);
+		List<TopicBean> topicList = queryResult.getDocs();
+		return topicList;
+	}
+	
+	public List<TopicBean> searchTopicByArticle_id(List<String> article_idList){
+		String selector = 
+				"{\r\n" + 
+				"   \"selector\": {\r\n" + 
+				"      \"article_list\": {\r\n" + 
+				"         \"$elemMatch\": {\r\n" + 
+				"            \"article_id\": {\r\n" + 
+				"               \"$or\": [";
+		
+		for(int i = 0; i<article_idList.size();i++) {
+			if(i == 0) {
+				selector +=
+						"\r\n" + 
+						"                  {\r\n" + 
+						"                     \"$eq\": \"" + article_idList.get(i) + "\"\r\n" + 
+						"                  }";
+			} else {
+				selector +=
+						",\r\n" + 
+						"                  {\r\n" + 
+						"                     \"$eq\": \"" + article_idList.get(i) + "\"\r\n" + 
+						"                  }";
+			}
+		}
+		
+		selector +=
+				"\r\n" + 
+				"               ]\r\n" + 
+				"            }\r\n" + 
+				"         }\r\n" + 
+				"      }\r\n" + 
+				"   },\r\n" + 
+				"   \"fields\": [\r\n" + 
+				"      \"_id\",\r\n" + 
+				"      \"_rev\"\r\n" + 
+				"   ],\r\n" + 
 				"   \"limit\": 100\r\n" + 
 				"}";
 
@@ -112,5 +173,44 @@ public class TopicService extends CloudantService{
 		List<TopicBean> topicList = queryResult.getDocs();
 		return topicList;
 	}
+	
+	public List<TopicBean> getSortedTopic(int skip){
+		String selector =
+				"{\r\n" + 
+				"   \"selector\": {\r\n" + 
+				"      \"$and\": [\r\n" + 
+				"         {\r\n" + 
+				"            \"article_list\": {\r\n" + 
+				"               \"$or\": [\r\n" + 
+				"                  {\r\n" + 
+				"                     \"$size\": 2\r\n" + 
+				"                  },\r\n" + 
+				"                  {\r\n" + 
+				"                     \"$size\": 3\r\n" + 
+				"                  }\r\n" + 
+				"               ]\r\n" + 
+				"            }\r\n" + 
+				"         }\r\n" + 
+				"      ]\r\n" + 
+				"   },\r\n" + 
+				"   \"fields\": [\r\n" + 
+				"      \"_id\",\r\n" + 
+				"      \"_rev\",\r\n" + 
+				"      \"topic_id\",\r\n" + 
+				"      \"article_list\",\r\n" + 
+				"      \"tags\"\r\n" + 
+				"   ],\r\n" + 
+				"   \"sort\": [\r\n" + 
+				"      {\r\n" + 
+				"         \"topic_id\": \"desc\"\r\n" + 
+				"      }\r\n" + 
+				"   ],\r\n" + 
+				"   \"limit\": 10,\r\n" + 
+				"   \"skip\": "+ skip + "\r\n" + 
+				"}";
 
+		QueryResult queryResult = getDB().query(selector, TopicBean.class);
+		List<TopicBean> topicList = queryResult.getDocs();
+		return topicList;
+	}
 }
