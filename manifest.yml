@@ -1,7 +1,7 @@
 ---
 applications:
  - name: Mediahinge
-   host: Mediahinge-application
+   host: mediahinge
    path: target/Mediahinge-0.0.1-SNAPSHOT.jar
    memory: 256M
    instances: 1

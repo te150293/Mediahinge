@@ -24,3 +24,13 @@ header #title {
 .link{
 	color: #FAFAD2;
 }
+
+a {
+	color:#FAFAD2;
+}
+
+footer {
+	background-color: #4682B4;
+	line-height: 70px;
+	height: 100px;
+}
