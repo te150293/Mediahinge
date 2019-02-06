@@ -47,7 +47,7 @@ public class TopicController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value="/")
-	public String top(Model model) {
+	public String top(Model model) throws InterruptedException {
 		List<TopicBean> recentTopicsBean = topicService.getSortedTopic(0);
 		System.out.println(recentTopicsBean + "\n");
 		
@@ -63,6 +63,7 @@ public class TopicController {
 				for(Object obj2 : topicBean.getArticle_list()) {
 					Score score = (Score)obj2;
 					ArticleBean articleBean = articleService.get(score.getArticle_id());
+					Thread.sleep(200);
 					ArticleForm articleForm = new ArticleForm();
 					articleForm.set_id(articleBean.get_id());
 					articleForm.setMedia(articleBean.getMedia());
